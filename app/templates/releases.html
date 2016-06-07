@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!--Import Icon Font-->
+    <link href="../static/node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="../static/node_modules/materialize-css/dist/css/materialize.min.css" media="screen,projection" />
+
+    <!--Import common.css-->
+    <link href="../static/styles/common.min.css" rel="stylesheet">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>一融邦产品服务平台</title>
+</head>
+
+<body>
+    <!-- header -->
+    {% include '_header.html' %}
+    <!-- main -->
+    <div class="container">
+        <div class="row"></div>
+        <div class="row"></div>
+        <div class="row"></div>
+        <h5>在这里了解产品研发方向和前沿规划</h5>
+        <p>目前一融邦正式启动的产品线为商城系统与供应商系统两条线。另外根据上级统筹安排，整个新后台将交付给一融邦统筹维护，因此很快将会新建后台产品线。</p>
+        <div class="row"></div>
+        <div class="row"></div>
+            <div class="col s12">
+                <ul class="tabs ">
+                    <li class="tab col s3"><a href="#test1">商城系统</a></li>
+                    <li class="tab col s3"><a href="#test2">供应商系统</a></li>
+                    <li class="tab col s3 disabled"><a href="#test3">内部运营系统（即将启用）</a></li>
+                </ul>
+            </div>
+            <div id="test1" class="col s12">
+                {% for item in all_line1_version %}
+                    {% if item.is_pre %}
+                <div class="row"></div>
+                <ul class="collapsible popout" data-collapsible="accordion">
+                    <li>
+                        <div class="collapsible-header active">
+                            <div class="chip orange white-text">预告版本</div> {{ item.num }}<span class="right">预告发布：{{ item.pub_time|string|truncate(10, end='') }}</span></div>
+                        <div class="collapsible-body">
+                            <div class="details">
+                                {{ item.details|safe }}
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                    {% endif %}
+                {% endfor %}
+                <div class="row"></div>
+                <ul class="collapsible" data-collapsible="accordion">
+                    {% for item in all_line1_version if not item.is_pre %}
+                        {% if item.is_new %}
+                    <li>
+                        <div class="collapsible-header active">
+                            <div class="chip green white-text">最新版本</div> {{ item.num }}<span class="right">上线时间：{{ item.pub_time|string|truncate(10, end='') }}</span></div>
+                        <div class="collapsible-body">
+                            <div class="details">
+                                {{ item.details|safe }}
+                            </div>
+                        </div>
+                    </li>
+                        {% else %}
+                    <li>
+                        <div class="collapsible-header active">{{ item.num }}<span class="right">上线时间：{{ item.pub_time|string|truncate(10, end='') }}</span></div>
+                        <div class="collapsible-body">
+                            <div class="details">
+                                {{ item.details|safe }}
+                            </div>
+                        </div>
+                    </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+
+
+            <div id="test2" class="col s12">
+                {% for item in all_line2_version %}
+                    {% if item.is_pre %}
+                <div class="row"></div>
+                <ul class="collapsible popout" data-collapsible="accordion">
+                    <li>
+                        <div class="collapsible-header active">
+                            <div class="chip orange white-text">预告版本</div> {{ item.num }}<span class="right">预告发布：{{ item.pub_time|string|truncate(10, end='') }}</span></div>
+                        <div class="collapsible-body">
+                            <div class="details">
+                                {{ item.details|safe }}
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                    {% endif %}
+                {% endfor %}
+                <div class="row"></div>
+                <ul class="collapsible" data-collapsible="accordion">
+                    {% for item in all_line2_version if not item.is_pre %}
+                        {% if item.is_new %}
+                    <li>
+                        <div class="collapsible-header active">
+                            <div class="chip green white-text">最新版本</div> {{ item.num }}<span class="right">上线时间：{{ item.pub_time|string|truncate(10, end='') }}</span></div>
+                        <div class="collapsible-body">
+                            <div class="details">
+                                {{ item.details|safe }}
+                            </div>
+                        </div>
+                    </li>
+                        {% else %}
+                    <li>
+                        <div class="collapsible-header active">{{ item.num }}<span class="right">上线时间：{{ item.pub_time|string|truncate(10, end='') }}</span></div>
+                        <div class="collapsible-body">
+                            <div class="details">
+                                {{ item.details|safe }}
+                            </div>
+                        </div>
+                    </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div id="test3" class="col s12">Test 3</div>
+        </div>
+    </div>
+    <!-- footer -->
+    {% include '_footer.html' %}
+
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="../static/node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="../static/node_modules/materialize-css/dist/js/materialize.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $(".button-collapse").sideNav();
+            $('ul.tabs').tabs();
+        })
+    </script>
+</body>
+
+</html>

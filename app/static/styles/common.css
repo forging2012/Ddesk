@@ -1,0 +1,42 @@
+@charset "utf-8";
+html {
+    font-family: "Helvetica Neue", "PingFangSC-Light", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+}
+
+.details {
+    margin: 20px 0;
+}
+
+.details * {
+    font-size: 13px;
+    line-height: 26px;
+}
+
+.details p {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.details table {
+    width: 100%;
+    table-layout: fixed;
+    margin: 15px 0;
+}
+
+.details thead {
+    background-color: #f9f9f9;
+}
+
+.details td,
+.details th {
+    min-width: 40px;
+    min-height: 30px;
+    border: 1px solid #ccc;
+    vertical-align: top;
+    padding: 2px 4px;
+    text-align: left;
+}
+
+.details img {
+    margin: 10px;
+}
