@@ -33,8 +33,8 @@ def edit_question():
     if this_question.assignee_id is None:
         form.assignee.choices.insert(0, (0, '请选择'))
     else:
-        form.assignee.choices.remove((this_question.assignee.id, this_question.assignee.username))
-        form.assignee.choices.insert(0, (this_question.assignee.id, this_question.assignee.username))
+        form.assignee.choices.remove((this_question.assignee.id, this_question.assignee.name))
+        form.assignee.choices.insert(0, (this_question.assignee.id, this_question.assignee.name))
     if form.validate_on_submit():
         this_question.feedback = form.feedback.data
         this_question.status = form.status.data
