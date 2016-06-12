@@ -126,6 +126,9 @@ class Demand(db.Model):
     own_customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))  # 需求所属用户
     assignee_id = db.Column(db.Integer, db.ForeignKey('admin.id'))  # 问题负责人
     title = db.Column(db.String(60))  # 需求标题
+    type_id = db.Column(db.Integer)  # 需求类型
+    audience_id = db.Column(db.Integer)  # 需求受众
+    source_id = db.Column(db.Integer)  # 需求来源
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))  # 所属分类ID
     details = db.Column(db.Text, default='')  # 需求详情
     attachment = db.Column(db.Text, default='')  # 附件地址
@@ -200,8 +203,8 @@ class Tag(db.Model):
 
 
 class Page(db.Model):
-    __table_args__ = {"useexisting": True}
     __tablename__ = 'page'
+    __table_args__ = {"useexisting": True}
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(20))  # 文章标题
     text = db.Column(db.Text)  # 正文
@@ -211,6 +214,13 @@ class Page(db.Model):
 
     def __repr__(self):
         return "<Page '{:s}>".format(self.title)
+
+
+class Config(db.Model):
+    __tablename__ = 'config'
+    __table_args__ = {"useexisting": True}
+    key = db.Column(db.String(64), primary_key=True)  # 配置名
+    value = db.Column(db.Text)  # 配置值
 
 
 if __name__ == '__main__':

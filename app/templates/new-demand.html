@@ -18,7 +18,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <title>一融邦产品服务平台</title>
+    <title>{{ web_title.value }}</title>
 </head>
 
 <body>
@@ -35,7 +35,12 @@
         <form id="dForm" action="" method="post" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             <div class="row">
-                {{ form.category(class="browser-default") }}
+                {{ form.type(class="browser-default col s6") }}
+                {{ form.audience(class="browser-default col s6") }}
+            </div>
+            <div class="row">
+                {{ form.source(class="browser-default col s6") }}
+                {{ form.category(class="browser-default col s6") }}
             </div>
             <div class="row">
                 {{ form.details(id="newTextarea",placeholder="在这里写你的需求，可以上传图片。") }}

@@ -3,11 +3,15 @@ from . import front
 from flask import render_template, request, redirect, url_for
 from app import config
 from flask_login import current_user
+from ..models import Question, Demand, Config
+
+
+web_title = Config.query.filter_by(key='title').first()
 
 
 @front.route('/query')
 def query():
-    from ..models import Question, Demand
+
     all_question = Question.query.order_by(Question.create_time.desc()).all()
     all_demand = Demand.query.order_by(Demand.create_time.desc()).all()
     if current_user.is_authenticated:
@@ -17,7 +21,7 @@ def query():
         all_user_question = None
         all_user_demand = None
     return render_template('query-list.html', all_question=all_question, all_demand=all_demand,
-                           all_user_question=all_user_question, all_user_demand=all_user_demand)
+                           all_user_question=all_user_question, all_user_demand=all_user_demand, web_title=web_title)
 
 
 @front.route('/query/details')
@@ -57,4 +61,4 @@ def query_details():
         title = this_demand.title
         status = config.DEMAND_STATUS[this_demand.status]
     return render_template('query-details.html', create_time=create_time, create_customer=create_customer,
-                           details=details, feedback=feedback, assignee=assignee, title=title, status=status)
+                           details=details, feedback=feedback, assignee=assignee, title=title, status=status, web_title=web_title)

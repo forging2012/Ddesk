@@ -76,7 +76,7 @@
                                         {% for page in all_page %}
                                             <tr class="odd gradeX">
                                                 <td>{{ page.id }}</td>
-                                                <td>{{ page.title }}</td>
+                                                <td><a href="{{ url_for('front.page', page_id=page.id) }}" target="_blank">{{ page.title }}</a></td>
                                                 <td>{{ page.tag.name }}</td>
                                                 <td class="center"><a href="{{ url_for('.edit_page', page_id=page.id) }}">编辑</a></td>
                                             </tr>

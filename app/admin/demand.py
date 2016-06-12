@@ -5,26 +5,28 @@ from flask.ext.login import login_required
 from ..forms import AdminDemandForm
 from app import config
 from datetime import datetime
+from ..models import db, Demand, Admin, Tag
 
 
 @admin.route('/demand')
 @login_required
 def demand():
-    from ..models import Demand
     status_code = request.args.get('status')
     if status_code == 'end':
         all_demand = Demand.query.filter(Demand.status > 9).all()
     else:
         all_demand = Demand.query.filter(Demand.status < 10).all()
     return render_template('admin/demand.html', all_demand=all_demand, DEMAND_STATUS=config.DEMAND_STATUS,
-                           status_code=status_code)
+                           status_code=status_code, Tag=Tag)
 
 
 @admin.route('/demand/edit', methods=['GET', 'POST'])
 @login_required
 def edit_demand():
-    from ..models import db, Demand, Admin
-    this_demand = Demand.query.get_or_404(request.args.get('demand_id'))
+    this_demand = Demand.query.get(request.args.get('demand_id'))
+    type = Tag.query.get(this_demand.type_id)
+    audience = Tag.query.get(this_demand.audience_id)
+    source = Tag.query.get(this_demand.source_id)
     form = AdminDemandForm(feedback=this_demand.feedback, status=this_demand.status, title=this_demand.title)
     all_admin = Admin.query.all()
     form.assignee.choices = [(admin.id, admin.name) for admin in all_admin]
@@ -45,4 +47,4 @@ def edit_demand():
         flash('需求信息已更新。', 'alert-success')
         return redirect(url_for('.demand'))
     return render_template('admin/demand-edit.html', this_demand=this_demand, DEMAND_STATUS=config.DEMAND_STATUS,
-                           form=form)
+                           form=form, Tag=Tag, type=type.name, audience=audience.name, source=source.name)

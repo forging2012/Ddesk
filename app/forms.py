@@ -13,6 +13,9 @@ class AddQuestionForm(Form):
 
 
 class AddDemandForm(Form):
+    type = SelectField('需求类型', validators=[DataRequired('请选需求类型。')], coerce=int)
+    audience = SelectField('需求受众', validators=[DataRequired('请选需求受众。')], coerce=int)
+    source = SelectField('需求来源', validators=[DataRequired('请选需求来源。')], coerce=int)
     category = SelectField('针对产品线', validators=[DataRequired('请选择针对的产品线。')], coerce=int)
     details = TextAreaField('需求', validators=[DataRequired('请描述您的需求。')])
     attachment = FileField('附件',
@@ -47,7 +50,7 @@ class AdminQuestionForm(Form):
 
 # 更新需求
 class AdminDemandForm(Form):
-    title = StringField('问题概述', validators=[DataRequired('问题概述必填。')])
+    title = StringField('需求概述', validators=[DataRequired('需求概述必填。')])
     feedback = TextAreaField('反馈内容')
     status = SelectField('问题状态', validators=[DataRequired('问题状态必选。')], choices=[(0, '请选择'), (100, '不实现'), (1, '待确认'),
                                                                                 (2, '待调研'), (3, '产品排期中'),
@@ -130,11 +133,10 @@ class AdminAdminEditForm(Form):
     submit = SubmitField('保存')
 
 
-
-# 删除Tag
-class AdminDelTagsForm(Form):
-    tag_id = HiddenField('Tag ID', validators=[DataRequired('TagID必填.')])
-    submit = SubmitField('确认操作')
+# 网站基本信息配置
+class AdminConfigForm(Form):
+    title = StringField('网站Title', validators=[DataRequired('网站Title必填哟！')])
+    submit = SubmitField('更新')
 
 
 

@@ -58,6 +58,18 @@
                         <label>需求流水号：{{ this_demand.id }}</label>
                     </div>
                     <div class="form-group">
+                        <label>需求类型：{{ type }}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>需求受众：{{ audience }}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>需求来源：{{ source }}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>产品线：{{ this_demand.category.name }}</label>
+                    </div>
+                    <div class="form-group">
                         <label>需求进展：{{ DEMAND_STATUS[this_demand.status] }}</label>
                     </div>
                     <div class="form-group">
