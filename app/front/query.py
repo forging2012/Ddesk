@@ -1,17 +1,14 @@
 # -*- coding: utf-8 -*-
 from . import front
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request
 from app import config
 from flask_login import current_user
 from ..models import Question, Demand, Config
 
 
-web_title = Config.query.filter_by(key='title').first()
-
-
 @front.route('/query')
 def query():
-
+    web_title = Config.query.filter_by(key='title').first()
     all_question = Question.query.order_by(Question.create_time.desc()).all()
     all_demand = Demand.query.order_by(Demand.create_time.desc()).all()
     if current_user.is_authenticated:
@@ -26,7 +23,7 @@ def query():
 
 @front.route('/query/details')
 def query_details():
-    from ..models import Question, Demand
+    web_title = Config.query.filter_by(key='title').first()
     cid = request.args.get('cid')
     pid = request.args.get('pid')
     create_time = None

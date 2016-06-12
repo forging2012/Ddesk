@@ -6,13 +6,10 @@ from flask.ext.login import login_user
 from ..models import Customer, Config
 
 
-web_title = Config.query.filter_by(key='title').first()
-
-
 @front.route('/login', methods=['GET', 'POST'])
 def login():
+    web_title = Config.query.filter_by(key='title').first()
     form = LoginForm()
-
     if form.validate_on_submit():
         user = Customer.query.filter_by(username=form.username.data, tel=form.tel.data).first()
         if user is not None:

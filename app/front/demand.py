@@ -11,12 +11,12 @@ from ..models import db, Demand, Category, Config, Tag
 
 
 up = upyun.UpYun(config.UPYUN_BUCKET, username=config.UPYUN_USERNAME, password=config.UPYUN_PASSWORD)
-web_title = Config.query.filter_by(key='title').first()
 
 
 @front.route('/demand/add', methods=['GET', 'POST'])
 @login_required
 def add_demand():
+    web_title = Config.query.filter_by(key='title').first()
     form = AddDemandForm()
     all_type = Tag.query.filter_by(category_id=10).all()
     all_audience = Tag.query.filter_by(category_id=11).all()

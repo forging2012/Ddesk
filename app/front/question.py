@@ -10,17 +10,16 @@ from flask.ext.login import login_required, current_user
 from ..models import db, Question, Category, Config
 
 
-web_title = Config.query.filter_by(key='title').first()
-
-
 @front.route('/commit/success')
 def commit_success():
+    web_title = Config.query.filter_by(key='title').first()
     return render_template('commit.html', web_title=web_title)
 
 
 @front.route('/question/add', methods=['GET', 'POST'])
 @login_required
 def add_question():
+    web_title = Config.query.filter_by(key='title').first()
     form = AddQuestionForm()
     categories = Category.query.filter_by(parents_id=3).all()
     form.category.choices = [(category.id, category.name) for category in categories]
