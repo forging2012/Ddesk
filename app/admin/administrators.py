@@ -53,7 +53,6 @@ def edit_administrators():
     this_admin_old_line = [line.admin_lines.id for line in this_admin.line.all()]
     form = AdminAdminEditForm(username=this_admin.username, name=this_admin.name, line=this_admin_old_line)
     category_line = Category.query.filter_by(parents_id=3).all()
-    print(('产品线', [(line.id, line.name) for line in category_line]))
     form.line.choices = [('产品线', [(line.id, line.name) for line in category_line])]
     if form.validate_on_submit():
         this_admin.name = form.name.data

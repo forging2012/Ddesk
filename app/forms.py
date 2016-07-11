@@ -3,7 +3,7 @@ from flask.ext.wtf import Form
 from wtforms import StringField, PasswordField, SubmitField, FloatField, TextAreaField, SelectField, HiddenField, IntegerField, BooleanField, RadioField, DateTimeField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flask.ext.wtf.file import FileField, FileAllowed, FileRequired
-from wtforms_components import SelectMultipleField
+from wtforms_components import SelectField as SelectField2, SelectMultipleField
 
 
 class AddQuestionForm(Form):
@@ -18,8 +18,6 @@ class AddDemandForm(Form):
     source = SelectField('需求来源', validators=[DataRequired('请选需求来源。')], coerce=int)
     category = SelectField('针对产品线', validators=[DataRequired('请选择针对的产品线。')], coerce=int)
     details = TextAreaField('需求', validators=[DataRequired('请描述您的需求。')])
-    attachment = FileField('附件',
-                           validators=[FileAllowed(['zip', 'rar', 'jar', 'gzip', '7-zip'], '请上传合并打包后的压缩包文件,不要传单个文件。')])
     submit = SubmitField('提交')
 
 
@@ -64,7 +62,7 @@ class AdminDemandForm(Form):
 
 # 版本发布
 class AdminVersionForm(Form):
-    pro_line = RadioField('产品线', validators=[DataRequired('产品线必填！')], choices=[(1, '商城系统'), (2, '供应商系统')], coerce=int)
+    pro_line = SelectField2('产品线', validators=[DataRequired('产品线必填！')], coerce=int)
     num = StringField('版本号', validators=[DataRequired('版本号必填!')])
     details = TextAreaField('更新详情', validators=[DataRequired('更新详情必填。')])
     pub_time = DateTimeField('发布时间', validators=[DataRequired('发布时间必填。')],  format='%Y-%m-%d')

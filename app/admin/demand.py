@@ -6,6 +6,36 @@ from ..forms import AdminDemandForm
 from app import config
 from datetime import datetime
 from ..models import db, Demand, Admin, Tag
+from ..sdk import alidayu
+
+
+# 初始化SDK
+req = alidayu.AlibabaAliqinFcSmsNumSendRequest(config.TAOBAO_API_KEY, config.TAOBAO_API_SECRET,
+                                               'https://eco.taobao.com/router/rest')
+
+
+def sms_demand(phone_number, name, sub, state, category='「需求」'):
+    req.sms_type = "normal"
+    req.sms_free_sign_name = "一融邦产品平台"
+    req.rec_num = str(phone_number)
+    req.sms_param = str({'name': str(name), 'category': category, 'sub': sub, 'state': state})
+    req.sms_template_code = "SMS_8140657"
+    try:
+        resp = req.getResponse()
+    except Exception as e:
+        return e
+
+
+def sms_demand_a(phone_number, name1, name2, category='「需求」'):
+    req.sms_type = "normal"
+    req.sms_free_sign_name = "一融邦产品平台"
+    req.rec_num = str(phone_number)
+    req.sms_param = str({'name1': name1, 'name2': name2, 'category': category})
+    req.sms_template_code = "SMS_12190370"
+    try:
+        resp = req.getResponse()
+    except Exception as e:
+        return e
 
 
 @admin.route('/demand')
@@ -44,6 +74,13 @@ def edit_demand():
         this_demand.modify_time = datetime.now()
         db.session.add(this_demand)
         db.session.commit()
+        phone_number = this_demand.create_customer.tel
+        name = this_demand.create_customer.username
+        if this_demand.status != form.status.data:
+            sms_demand(phone_number=phone_number, name=name, sub=form.title.data, state=config.DEMAND_STATUS[form.status.data])
+        if this_demand.assignee_id != form.assignee.data:
+            this_admin = Admin.query.get(form.assignee.data)
+            sms_demand_a(name1=this_admin.name, name2=name)
         flash('需求信息已更新。', 'alert-success')
         return redirect(url_for('.demand'))
     return render_template('admin/demand-edit.html', this_demand=this_demand, DEMAND_STATUS=config.DEMAND_STATUS,

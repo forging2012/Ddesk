@@ -31,7 +31,9 @@ def add_demand():
     form.source.choices.insert(0, (0, '请选择需求来源'))
     form.category.choices.insert(0, (0, '请选择产品线'))
     if form.validate_on_submit():
-        if form.attachment.data:
+        """
+        附加上传功能更暂时取消,因为附件太大。
+                if form.attachment.data:
             time = datetime.now()
             time_now = str(time.time())
             data = form.attachment.data
@@ -44,8 +46,10 @@ def add_demand():
                                     own_customer_id=current_user.id, details=form.details.data,
                                     category_id=form.category.data, attachment=return_info)
         else:
-            new_demand = Demand(type_id=form.type.data, audience_id=form.audience.data, source_id=form.source.data,
-                                own_customer_id=current_user.id, details=form.details.data, category_id=form.category.data)
+        """
+
+        new_demand = Demand(type_id=form.type.data, audience_id=form.audience.data, source_id=form.source.data,
+                            own_customer_id=current_user.id, details=form.details.data, category_id=form.category.data)
         db.session.add(new_demand)
         db.session.commit()
         return redirect(url_for('.commit_success'))

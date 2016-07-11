@@ -20,3 +20,7 @@ class DevelopmentConfig(Config):
 
     # Other
     LOGIN_TOKEN = ''
+
+    # SMS API
+    TAOBAO_API_KEY = ''
+    TAOBAO_API_SECRET = ''

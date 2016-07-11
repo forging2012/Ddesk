@@ -77,11 +77,7 @@
                                         {% for ver in all_version %}
                                             <tr class="odd gradeX">
                                                 <td>
-                                                    {% if ver.pro_line == 1 %}
-                                                        商城系统
-                                                    {% elif ver.pro_line == 2 %}
-                                                        供应商系统
-                                                    {% endif %}
+                                                    {{ ver.tag.name }}
                                                 </td>
                                                 <td>{{ ver.num }}</td>
                                                 <td>{{ ver.pub_time|string|truncate(10, end='') }}</td>

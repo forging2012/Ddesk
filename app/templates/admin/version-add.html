@@ -28,6 +28,9 @@
 
     <link href="../../static/admin/bower_components/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" type="text/css" >
 
+    <!-- Bootstrap-chosen -->
+    <link href="../../static/admin/node_modules/bootstrap-chosen/bootstrap-chosen.css" rel="stylesheet">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -60,7 +63,7 @@
                         {{ form.hidden_tag() }}
                         <div class="form-group">
                             {{ form.pro_line.label }}
-                            {{ form.pro_line(class="radio") }}
+                            {{ form.pro_line(class="chosen-select") }}
                         </div>
                         <div class="form-group">
                             {{ form.num.label }}
@@ -129,6 +132,17 @@
               yearEnd: 2050,        //设置最大年份
               todayButton: false    //关闭选择今天按钮
         });
+    </script>
+
+    <!-- Bootstrap-chosen -->
+    <script src="../../static/admin/node_modules/bootstrap-chosen/dist/chosen.jquery-1.4.2/chosen.jquery.min.js"></script>
+    <script>
+          $(function() {
+            $(".chosen-select").chosen({
+                no_results_text: "没有匹配的Tag：",
+                placeholder_text_multiple:'请输入关键词选择Tag'
+            });
+          });
     </script>
 </body>
 

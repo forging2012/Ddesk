@@ -7,6 +7,35 @@ from app import config
 import json
 from datetime import datetime
 import upyun
+from ..sdk import alidayu
+
+
+req2 = alidayu.AlibabaAliqinFcSmsNumSendRequest(config.TAOBAO_API_KEY, config.TAOBAO_API_SECRET,
+                                               'https://eco.taobao.com/router/rest')
+
+
+def sms_question(phone_number, name, sub, state, category='「问题」'):
+    req2.sms_type = "normal"
+    req2.sms_free_sign_name = "一融邦产品平台"
+    req2.rec_num = str(phone_number)
+    req2.sms_param = str({'name': str(name), 'category': category, 'sub': sub, 'state': state})
+    req2.sms_template_code = "SMS_8140657"
+    try:
+        resp = req2.getResponse()
+    except Exception as e:
+        return e
+
+
+def sms_question_a(phone_number, name1, name2, category='「问题」'):
+    req2.sms_type = "normal"
+    req2.sms_free_sign_name = "一融邦产品平台"
+    req2.rec_num = str(phone_number)
+    req2.sms_param = str({'name1': name1, 'name2': name2, 'category': category})
+    req2.sms_template_code = "SMS_12190370"
+    try:
+        resp = req2.getResponse()
+    except Exception as e:
+        return e
 
 
 @admin.route('/question')
@@ -43,6 +72,14 @@ def edit_question():
         this_question.modify_time = datetime.now()
         db.session.add(this_question)
         db.session.commit()
+        phone_number = this_question.create_customer.tel
+        name = this_question.create_customer.username
+        if this_question.status != form.status.data:
+            sms_question(phone_number=phone_number, name=name, sub=form.title.data,
+                         state=config.QUESTION_STATUS[form.status.data])
+        if this_question.assignee_id != form.assignee.data:
+            this_admin = Admin.query.get(form.assignee.data)
+            sms_question_a(name1=this_admin.name, name2=name)
         flash('问题信息已更新。', 'alert-success')
         return redirect(url_for('.question'))
     return render_template('admin/question-edit.html', this_question=this_question, QUESTION_STATUS=config.QUESTION_STATUS,

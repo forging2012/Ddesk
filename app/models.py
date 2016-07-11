@@ -156,11 +156,7 @@ class Version(db.Model):
     __tablename__ = 'version'
     __table_args__ = {"useexisting": True}
     id = db.Column(db.Integer, primary_key=True)
-    pro_line = db.Column(db.Integer, default=0)  # 产品线
-    '''
-     1 = 商城系统
-     2 = 供应商系统
-    '''
+    pro_line = db.Column(db.Integer, db.ForeignKey('tag.id'))  # 产品线
     num = db.Column(db.String(10))  # 版本号
     is_new = db.Column(db.Boolean, default=False)  # 是否最新版本
     is_pre = db.Column(db.Boolean, default=False)  # 是否预告版本
@@ -197,6 +193,7 @@ class Tag(db.Model):
     sequence = db.Column(db.Integer, default=0)  # 排序:小数靠前,大数靠后
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))  # 所属分类ID
     page = db.relationship('Page', backref='tag')  # tag下所属文章
+    version = db.relationship('Version', backref='tag')  # tag下所属版本
 
     def __repr__(self):
         return "<Tag '{:s}>".format(self.name)

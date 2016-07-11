@@ -27,106 +27,73 @@
         <div class="row"></div>
         <div class="row"></div>
         <h5>在这里了解产品研发方向和前沿规划</h5>
-        <p>目前一融邦正式启动的产品线为商城系统与供应商系统两条线。另外根据上级统筹安排，整个新后台将交付给一融邦统筹维护，因此很快将会新建后台产品线。</p>
+        <p>先选择产品线,之后选择具体产品了解其规划和历史版本情况</p>
         <div class="row"></div>
         <div class="row"></div>
             <div class="col s12">
-                <ul class="tabs ">
-                    <li class="tab col s3"><a href="#test1">商城系统</a></li>
-                    <li class="tab col s3"><a href="#test2">供应商系统</a></li>
-                    <li class="tab col s3 disabled"><a href="#test3">内部运营系统（即将启用）</a></li>
-                </ul>
+            {% for category in all_category %}
+                <a class="waves-effect waves-light btn" href="{{ url_for('.version', id=category.id) }}">{{ category.name }}</a>
+            {% endfor %}
+            <div class="row"></div>
+            <div class="row"></div>
+                {% if all_tag %}
+                    <ul class="tabs ">
+                     {% for item in all_tag %}
+                        <li class="tab col s3"><a href="#{{ item.id }}">{{ item.name }}</a></li>
+                     {% endfor %}
+                    </ul>
+                {% endif %}
             </div>
-            <div id="test1" class="col s12">
-                {% for item in all_line1_version %}
-                    {% if item.is_pre %}
-                <div class="row"></div>
-                <ul class="collapsible popout" data-collapsible="accordion">
-                    <li>
-                        <div class="collapsible-header active">
-                            <div class="chip orange white-text">预告版本</div> {{ item.num }}<span class="right">预告发布：{{ item.pub_time|string|truncate(10, end='') }}</span></div>
-                        <div class="collapsible-body">
-                            <div class="details">
-                                {{ item.details|safe }}
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-                    {% endif %}
-                {% endfor %}
-                <div class="row"></div>
-                <ul class="collapsible" data-collapsible="accordion">
-                    {% for item in all_line1_version if not item.is_pre %}
-                        {% if item.is_new %}
-                    <li>
-                        <div class="collapsible-header active">
-                            <div class="chip green white-text">最新版本</div> {{ item.num }}<span class="right">上线时间：{{ item.pub_time|string|truncate(10, end='') }}</span></div>
-                        <div class="collapsible-body">
-                            <div class="details">
-                                {{ item.details|safe }}
-                            </div>
-                        </div>
-                    </li>
-                        {% else %}
-                    <li>
-                        <div class="collapsible-header active">{{ item.num }}<span class="right">上线时间：{{ item.pub_time|string|truncate(10, end='') }}</span></div>
-                        <div class="collapsible-body">
-                            <div class="details">
-                                {{ item.details|safe }}
-                            </div>
-                        </div>
-                    </li>
+
+            {% if all_tag %}
+                {% for tag in all_tag %}
+                <div id="{{ tag.id }}" class="col s12">
+                    {% for item in Version.query.filter_by(pro_line=tag.id).order_by(Version.pub_time.desc()).all() %}
+                        {% if item.is_pre %}
+                            <div class="row"></div>
+                            <ul class="collapsible popout" data-collapsible="accordion">
+                                <li>
+                                    <div class="collapsible-header active">
+                                        <div class="chip orange white-text">预告版本</div> {{ item.num }}<span class="right">预告发布：{{ item.pub_time|string|truncate(10, end='') }}</span></div>
+                                    <div class="collapsible-body">
+                                        <div class="details">
+                                            {{ item.details|safe }}
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
                         {% endif %}
                     {% endfor %}
-                </ul>
-            </div>
+                    <div class="row"></div>
 
-
-            <div id="test2" class="col s12">
-                {% for item in all_line2_version %}
-                    {% if item.is_pre %}
-                <div class="row"></div>
-                <ul class="collapsible popout" data-collapsible="accordion">
-                    <li>
-                        <div class="collapsible-header active">
-                            <div class="chip orange white-text">预告版本</div> {{ item.num }}<span class="right">预告发布：{{ item.pub_time|string|truncate(10, end='') }}</span></div>
-                        <div class="collapsible-body">
-                            <div class="details">
-                                {{ item.details|safe }}
+                    <ul class="collapsible" data-collapsible="accordion">
+                        {% for item in Version.query.filter_by(pro_line=tag.id).order_by(Version.pub_time.desc()).all() if not item.is_pre %}
+                            {% if item.is_new %}
+                        <li>
+                            <div class="collapsible-header active">
+                                <div class="chip green white-text">最新版本</div> {{ item.num }}<span class="right">上线时间：{{ item.pub_time|string|truncate(10, end='') }}</span></div>
+                            <div class="collapsible-body">
+                                <div class="details">
+                                    {{ item.details|safe }}
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                </ul>
-                    {% endif %}
+                        </li>
+                            {% else %}
+                        <li>
+                            <div class="collapsible-header active">{{ item.num }}<span class="right">上线时间：{{ item.pub_time|string|truncate(10, end='') }}</span></div>
+                            <div class="collapsible-body">
+                                <div class="details">
+                                    {{ item.details|safe }}
+                                </div>
+                            </div>
+                        </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
                 {% endfor %}
-                <div class="row"></div>
-                <ul class="collapsible" data-collapsible="accordion">
-                    {% for item in all_line2_version if not item.is_pre %}
-                        {% if item.is_new %}
-                    <li>
-                        <div class="collapsible-header active">
-                            <div class="chip green white-text">最新版本</div> {{ item.num }}<span class="right">上线时间：{{ item.pub_time|string|truncate(10, end='') }}</span></div>
-                        <div class="collapsible-body">
-                            <div class="details">
-                                {{ item.details|safe }}
-                            </div>
-                        </div>
-                    </li>
-                        {% else %}
-                    <li>
-                        <div class="collapsible-header active">{{ item.num }}<span class="right">上线时间：{{ item.pub_time|string|truncate(10, end='') }}</span></div>
-                        <div class="collapsible-body">
-                            <div class="details">
-                                {{ item.details|safe }}
-                            </div>
-                        </div>
-                    </li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-            </div>
+            {% endif %}
 
-            <div id="test3" class="col s12">Test 3</div>
         </div>
     </div>
     <!-- footer -->
