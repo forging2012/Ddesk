@@ -23,7 +23,7 @@ def sms_demand(phone_number, name, sub, state, category='「需求」'):
     try:
         resp = req.getResponse()
     except Exception as e:
-        return e
+        print(e)
 
 
 def sms_demand_a(phone_number, name1, name2, category='「需求」'):
@@ -35,7 +35,7 @@ def sms_demand_a(phone_number, name1, name2, category='「需求」'):
     try:
         resp = req.getResponse()
     except Exception as e:
-        return e
+        print(e)
 
 
 @admin.route('/demand')
@@ -66,6 +66,14 @@ def edit_demand():
         form.assignee.choices.remove((this_demand.assignee.id, this_demand.assignee.name))
         form.assignee.choices.insert(0, (this_demand.assignee.id, this_demand.assignee.name))
     if form.validate_on_submit():
+        phone_number = this_demand.create_customer.tel
+        name = this_demand.create_customer.username
+        if this_demand.status != form.status.data:
+            sms_demand(phone_number=phone_number, name=name, sub=form.title.data,
+                       state=config.DEMAND_STATUS[form.status.data])
+        if this_demand.assignee_id != form.assignee.data:
+            this_admin = Admin.query.get(form.assignee.data)
+            sms_demand_a(name1=this_admin.name, name2=name)
         if form.feedback.data:
             this_demand.feedback = form.feedback.data
         this_demand.status = form.status.data
@@ -74,13 +82,6 @@ def edit_demand():
         this_demand.modify_time = datetime.now()
         db.session.add(this_demand)
         db.session.commit()
-        phone_number = this_demand.create_customer.tel
-        name = this_demand.create_customer.username
-        if this_demand.status != form.status.data:
-            sms_demand(phone_number=phone_number, name=name, sub=form.title.data, state=config.DEMAND_STATUS[form.status.data])
-        if this_demand.assignee_id != form.assignee.data:
-            this_admin = Admin.query.get(form.assignee.data)
-            sms_demand_a(name1=this_admin.name, name2=name)
         flash('需求信息已更新。', 'alert-success')
         return redirect(url_for('.demand'))
     return render_template('admin/demand-edit.html', this_demand=this_demand, DEMAND_STATUS=config.DEMAND_STATUS,

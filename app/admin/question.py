@@ -65,13 +65,6 @@ def edit_question():
         form.assignee.choices.remove((this_question.assignee.id, this_question.assignee.name))
         form.assignee.choices.insert(0, (this_question.assignee.id, this_question.assignee.name))
     if form.validate_on_submit():
-        this_question.feedback = form.feedback.data
-        this_question.status = form.status.data
-        this_question.title = form.title.data
-        this_question.assignee_id = form.assignee.data
-        this_question.modify_time = datetime.now()
-        db.session.add(this_question)
-        db.session.commit()
         phone_number = this_question.create_customer.tel
         name = this_question.create_customer.username
         if this_question.status != form.status.data:
@@ -80,6 +73,13 @@ def edit_question():
         if this_question.assignee_id != form.assignee.data:
             this_admin = Admin.query.get(form.assignee.data)
             sms_question_a(name1=this_admin.name, name2=name)
+        this_question.feedback = form.feedback.data
+        this_question.status = form.status.data
+        this_question.title = form.title.data
+        this_question.assignee_id = form.assignee.data
+        this_question.modify_time = datetime.now()
+        db.session.add(this_question)
+        db.session.commit()
         flash('问题信息已更新。', 'alert-success')
         return redirect(url_for('.question'))
     return render_template('admin/question-edit.html', this_question=this_question, QUESTION_STATUS=config.QUESTION_STATUS,
