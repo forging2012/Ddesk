@@ -70,9 +70,6 @@ def edit_question():
         if this_question.status != form.status.data:
             sms_question(phone_number=phone_number, name=name, sub=form.title.data,
                          state=config.QUESTION_STATUS[form.status.data])
-        if this_question.assignee_id != form.assignee.data:
-            this_admin = Admin.query.get(form.assignee.data)
-            sms_question_a(name1=this_admin.name, name2=name)
         this_question.feedback = form.feedback.data
         this_question.status = form.status.data
         this_question.title = form.title.data

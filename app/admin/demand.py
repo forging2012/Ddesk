@@ -71,9 +71,6 @@ def edit_demand():
         if this_demand.status != form.status.data:
             sms_demand(phone_number=phone_number, name=name, sub=form.title.data,
                        state=config.DEMAND_STATUS[form.status.data])
-        if this_demand.assignee_id != form.assignee.data:
-            this_admin = Admin.query.get(form.assignee.data)
-            sms_demand_a(name1=this_admin.name, name2=name)
         if form.feedback.data:
             this_demand.feedback = form.feedback.data
         this_demand.status = form.status.data
