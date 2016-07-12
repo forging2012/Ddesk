@@ -16,7 +16,7 @@ req = alidayu.AlibabaAliqinFcSmsNumSendRequest(config.TAOBAO_API_KEY, config.TAO
 
 def sms_demand(phone_number, name, sub, state, category='「需求」'):
     req.sms_type = "normal"
-    req.sms_free_sign_name = "一融邦产品平台"
+    req.sms_free_sign_name = "一融需求系统"
     req.rec_num = str(phone_number)
     req.sms_param = str({'name': str(name), 'category': category, 'sub': sub, 'state': state})
     req.sms_template_code = "SMS_8140657"
@@ -28,7 +28,7 @@ def sms_demand(phone_number, name, sub, state, category='「需求」'):
 
 def sms_demand_a(phone_number, name1, name2, category='「需求」'):
     req.sms_type = "normal"
-    req.sms_free_sign_name = "一融邦产品平台"
+    req.sms_free_sign_name = "一融需求系统"
     req.rec_num = str(phone_number)
     req.sms_param = str({'name1': name1, 'name2': name2, 'category': category})
     req.sms_template_code = "SMS_12190370"
