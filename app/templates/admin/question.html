@@ -74,6 +74,7 @@
                                             <th>流水号</th>
                                             <th>发起时间</th>
                                             <th>发起人</th>
+                                            <th>相关产品线</th>
                                             <th>问题概述</th>
                                             <th>跟进负责人</th>
                                             <th>处理进度</th>
@@ -86,6 +87,7 @@
                                             <td>{{ question.id }}</td>
                                             <td>{{ question.create_time }}</td>
                                             <td>{{ question.create_customer.username }}({{ question.create_customer.tel }})</td>
+                                            <td>{{ question.category.name }}</td>
                                             <td>{{ question.title }}</td>
                                             <td>{{ question.assignee.name }}</td>
                                             <td>{{ QUESTION_STATUS[question.status] }}</td>

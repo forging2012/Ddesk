@@ -64,7 +64,10 @@
                         <label>发起人信息：{{ this_question.create_customer.username }}, {{ this_question.create_customer.tel }}</label>
                     </div>
                     <div class="form-group">
-                        <label>原始需求：{{ this_question.details|safe }}</label>
+                        <label>产品线：{{ this_question.category.name }}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>问题描述：{{ this_question.details|safe }}</label>
                     </div>
                     <form action="" method="post">
                         {{ form.hidden_tag() }}

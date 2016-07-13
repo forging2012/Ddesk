@@ -74,6 +74,7 @@
                                             <th>流水号</th>
                                             <th>发起时间</th>
                                             <th>发起人</th>
+                                            <th>相关产品线</th>
                                             <th>需求概述</th>
                                             <th>跟进负责人</th>
                                             <th>处理进度</th>
@@ -86,6 +87,7 @@
                                             <td>{{ demand.id }}</td>
                                             <td>{{ demand.create_time }}</td>
                                             <td>{{ demand.create_customer.username }}({{ demand.create_customer.tel }})</td>
+                                            <td>{{ demand.category.name }}</td>
                                             <td>{{ demand.title }}</td>
                                             <td>{{ demand.assignee.name }}</td>
                                             <td>{{ DEMAND_STATUS[demand.status] }}</td>
