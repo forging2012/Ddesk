@@ -37,7 +37,8 @@ def add_administrators():
     from ..models import db, Admin
     form = AdminAdminForm()
     if form.validate_on_submit():
-        new_admin = Admin(username=form.username.data, name=form.name.data, password=form.password.data)
+        new_admin = Admin(username=form.username.data, name=form.name.data, password=form.password.data,
+                          tel=form.tel.data)
         db.session.add(new_admin)
         db.session.commit()
         flash('添加管理员成功。', 'alert-success')
@@ -51,11 +52,13 @@ def edit_administrators():
     from ..models import db, Admin, Category
     this_admin = Admin.query.get_or_404(request.args.get('id'))
     this_admin_old_line = [line.admin_lines.id for line in this_admin.line.all()]
-    form = AdminAdminEditForm(username=this_admin.username, name=this_admin.name, line=this_admin_old_line)
+    form = AdminAdminEditForm(username=this_admin.username, name=this_admin.name, line=this_admin_old_line,
+                              tel=this_admin.tel)
     category_line = Category.query.filter_by(parents_id=3).all()
     form.line.choices = [('产品线', [(line.id, line.name) for line in category_line])]
     if form.validate_on_submit():
         this_admin.name = form.name.data
+        this_admin.tel = form.tel.data
         if form.password.data:
             this_admin.password = form.password.data
         for old_line in this_admin.line.all():

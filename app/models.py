@@ -27,6 +27,7 @@ class Admin(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(60), unique=True)  # 用户名
     name = db.Column(db.String(10))  # 真实姓名
+    tel = db.Column(db.String(20), unique=True)  # 电话
     password_hash = db.Column(db.String(128))  # 密码
     email = db.Column(db.String(64), unique=True)  # 用户邮箱
     create_time = db.Column(db.DateTime, default=datetime.now)  # 账号创建时间

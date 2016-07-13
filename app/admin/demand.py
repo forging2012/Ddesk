@@ -31,7 +31,7 @@ def sms_demand_a(phone_number, name1, name2, category='「需求」'):
     req.sms_free_sign_name = "一融需求系统"
     req.rec_num = str(phone_number)
     req.sms_param = str({'name1': name1, 'name2': name2, 'category': category})
-    req.sms_template_code = "SMS_12190370"
+    req.sms_template_code = "SMS_12200742"
     try:
         resp = req.getResponse()
     except Exception as e:
@@ -71,6 +71,9 @@ def edit_demand():
         if this_demand.status != form.status.data:
             sms_demand(phone_number=phone_number, name=name, sub=form.title.data,
                        state=config.DEMAND_STATUS[form.status.data])
+        if this_demand.assignee_id != form.assignee.data:
+            this_admin = Admin.query.get(int(form.assignee.data))
+            sms_demand_a(phone_number=this_admin.tel, name1=this_admin.name, name2=name)
         if form.feedback.data:
             this_demand.feedback = form.feedback.data
         this_demand.status = form.status.data

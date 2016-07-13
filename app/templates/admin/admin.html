@@ -67,6 +67,7 @@
                                         <tr>
                                             <th>ID</th>
                                             <th>姓名</th>
+                                            <th>手机号</th>
                                             <th>负责产品线</th>
                                             <th>状态</th>
                                             <th>操作</th>
@@ -77,6 +78,7 @@
                                             <tr class="odd gradeX">
                                                 <td>{{ item.id }}</td>
                                                 <td>{{ item.name }}(用户名:{{ item.username }})</td>
+                                            <td>{{ item.tel }}</td>
                                                 <td>
                                                     {% for line in item.line.all()  %}
                                                         {{ line.admin_lines.name }}

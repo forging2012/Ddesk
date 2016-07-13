@@ -31,7 +31,7 @@ def sms_question_a(phone_number, name1, name2, category='「问题」'):
     req2.sms_free_sign_name = "一融需求系统"
     req2.rec_num = str(phone_number)
     req2.sms_param = str({'name1': name1, 'name2': name2, 'category': category})
-    req2.sms_template_code = "SMS_12190370"
+    req2.sms_template_code = "SMS_12200742"
     try:
         resp = req2.getResponse()
     except Exception as e:
@@ -56,7 +56,7 @@ def question():
 def edit_question():
     from ..models import db, Question, Admin
     this_question = Question.query.get_or_404(request.args.get('question_id'))
-    form = AdminQuestionForm(feedback=this_question.feedback, status=this_question.status)
+    form = AdminQuestionForm(feedback=this_question.feedback, status=this_question.status, title=this_question.title)
     all_admin = Admin.query.all()
     form.assignee.choices = [(admin.id, admin.name) for admin in all_admin]
     if this_question.assignee_id is None:
@@ -70,6 +70,9 @@ def edit_question():
         if this_question.status != form.status.data:
             sms_question(phone_number=phone_number, name=name, sub=form.title.data,
                          state=config.QUESTION_STATUS[form.status.data])
+        if this_question.assignee_id != form.assignee.data:
+            this_admin = Admin.query.get(int(form.assignee.data))
+            sms_question_a(phone_number=this_admin.tel, name1=this_admin.name, name2=name)
         this_question.feedback = form.feedback.data
         this_question.status = form.status.data
         this_question.title = form.title.data

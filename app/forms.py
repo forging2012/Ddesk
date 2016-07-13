@@ -111,6 +111,7 @@ class AdminPageForm(Form):
 class AdminAdminForm(Form):
     username = StringField('用户名(登录用)', validators=[DataRequired('用户名必填哟！')])
     name = StringField('姓名', validators=[DataRequired('姓名必填哟！')])
+    tel = StringField('手机号', validators=[DataRequired('手机号必填哟！')])
     password = PasswordField('密码', validators=[DataRequired('密码必填哟！'), Length(1, 16, '密码6位以上，16位以下。'), EqualTo('password2', message='两次输入的密码不一致，请您检查后重新输入。')])
     password2 = PasswordField('重复密码')
     submit = SubmitField('保存')
@@ -125,6 +126,7 @@ class AdminAdminForm(Form):
 class AdminAdminEditForm(Form):
     username = StringField('用户名(登录用)')
     name = StringField('姓名', validators=[DataRequired('姓名必填哟！')])
+    tel = StringField('手机号', validators=[DataRequired('手机号必填哟！')])
     line = SelectMultipleField('负责产品线', coerce=int)
     password = PasswordField('密码', validators=[EqualTo('password2', message='两次输入的密码不一致，请您检查后重新输入。')])
     password2 = PasswordField('重复密码')
