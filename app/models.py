@@ -101,6 +101,7 @@ class Question(db.Model):
     __tablename__ = 'question'
     __table_args__ = {"useexisting": True}
     id = db.Column(db.Integer, primary_key=True)
+    id_hash = db.Column(db.String(128), unique=True)
     own_customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))  # 问题所属用户
     assignee_id = db.Column(db.Integer, db.ForeignKey('admin.id'))  # 问题负责人
     title = db.Column(db.String(60))  # 标题
@@ -124,6 +125,7 @@ class Demand(db.Model):
     __tablename__ = 'demand'
     __table_args__ = {"useexisting": True}
     id = db.Column(db.Integer, primary_key=True)
+    id_hash = db.Column(db.String(128), unique=True)
     own_customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))  # 需求所属用户
     assignee_id = db.Column(db.Integer, db.ForeignKey('admin.id'))  # 问题负责人
     title = db.Column(db.String(60))  # 需求标题

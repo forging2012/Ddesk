@@ -24,3 +24,6 @@ class UATConfig(Config):
     # SMS API
     TAOBAO_API_KEY = ''
     TAOBAO_API_SECRET = ''
+    DINGTALK_API_CID = ''
+    DINGTALK_API_SECRET = ''
+    DINGTALK_API_MSGID = ''
