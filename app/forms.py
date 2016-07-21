@@ -51,10 +51,10 @@ class AdminDemandForm(Form):
     title = StringField('需求概述', validators=[DataRequired('需求概述必填。')])
     feedback = TextAreaField('反馈内容')
     status = SelectField('问题状态', validators=[DataRequired('问题状态必选。')], choices=[(0, '请选择'), (100, '不实现'), (1, '待确认'),
-                                                                                (2, '待调研'), (3, '产品排期中'),
+                                                                                (2, '待调研'), (3, '排期中'),
                                                                                 (4, '设计中'), (5, '研发排期中'),
                                                                                 (6, '研发实现中'), (9, '搁置'),
-                                                                                (10, '已实现')],
+                                                                                (10, '已完成')],
                          coerce=int)
     assignee = SelectField('需求当前负责人', validators=[DataRequired('负责人必须指定。')], coerce=int)
     submit = SubmitField('更新')
