@@ -13,7 +13,7 @@ login_manager = LoginManager(app)
 login_manager.session_protection = 'strong'
 login_manager.login_view = '.login'
 login_manager.login_message = '请先登录再操作。'
-login_manager.login_message_category = 'alert-danger'
+login_manager.login_message_category = 'alert-danger is-danger'
 
 
 # login回调函数
