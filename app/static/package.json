@@ -1,0 +1,19 @@
+{
+  "name": "d-desk",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "bootstrap-chosen": "^1.4.2",
+    "bulma": "^0.1.2",
+    "font-awesome": "^4.6.1",
+    "materialize-css": "^0.97.7",
+    "simditor": "^2.3.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "zhipeng Du",
+  "license": "ISC"
+}

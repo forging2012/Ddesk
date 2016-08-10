@@ -27,19 +27,29 @@ from ..models import db, Config
 @admin.route('/config', methods=['GET', 'POST'])
 @login_required
 def config():
+    title = ''
+    subtitle = ''
     old_title = Config.query.filter_by(key='title').first()
-    if old_title is not None:
-        form = AdminConfigForm(title=old_title.value)
-    else:
-        form = AdminConfigForm()
+    old_subtitle = Config.query.filter_by(key='subtitle').first()
+    if old_title:
+        title = old_title.value
+    if old_subtitle:
+        subtitle = old_subtitle.value
+    form = AdminConfigForm(title=title, subtitle=subtitle)
     if form.validate_on_submit():
-        if old_title is not None:
+        if old_title:
             old_title.value = form.title.data
             db.session.add(old_title)
         else:
             new_title = Config(key='title', value=form.title.data)
             db.session.add(new_title)
+        if old_subtitle:
+            old_subtitle.value = form.subtitle.data
+            db.session.add(old_subtitle)
+        else:
+            new_subtitle = Config(key='subtitle', value=form.subtitle.data)
+            db.session.add(new_subtitle)
         db.session.commit()
-        flash('基本信息配置已更新。', 'alert-success')
+        flash('网站基本配置已更新。', 'alert-success')
         return redirect(url_for('.config'))
     return render_template('admin/config.html', form=form)

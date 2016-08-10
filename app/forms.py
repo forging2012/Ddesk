@@ -50,11 +50,11 @@ class AdminQuestionForm(Form):
 class AdminDemandForm(Form):
     title = StringField('需求概述', validators=[DataRequired('需求概述必填。')])
     feedback = TextAreaField('反馈内容')
-    status = SelectField('问题状态', validators=[DataRequired('问题状态必选。')], choices=[(0, '请选择'), (100, '不实现'), (1, '待确认'),
+    status = SelectField('处理进度', validators=[DataRequired('处理进度必选。')], choices=[(0, '请选择'), (100, '不实现'), (1, '待确认'),
                                                                                 (2, '待调研'), (3, '排期中'),
                                                                                 (4, '设计中'), (5, '研发排期中'),
                                                                                 (6, '研发实现中'), (9, '搁置'),
-                                                                                (10, '已完成')],
+                                                                                (10, '已完成'), (11, '部分完成')],
                          coerce=int)
     assignee = SelectField('需求当前负责人', validators=[DataRequired('负责人必须指定。')], coerce=int)
     submit = SubmitField('更新')
@@ -135,7 +135,8 @@ class AdminAdminEditForm(Form):
 
 # 网站基本信息配置
 class AdminConfigForm(Form):
-    title = StringField('网站Title', validators=[DataRequired('网站Title必填哟！')])
+    title = StringField('网站Title', validators=[DataRequired('网站Title必填！')])
+    subtitle = StringField('网站副标题', validators=[DataRequired('网站副标题必填！')])
     submit = SubmitField('更新')
 
 

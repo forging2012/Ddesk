@@ -18,3 +18,8 @@ def index():
 @front.route('/robots.txt')
 def static_from_root():
     return send_from_directory(app.static_folder, request.path[1:])
+
+
+@front.route('/favicon.ico')
+def static_from_favicon():
+    return send_from_directory(app.static_folder, request.path[1:])

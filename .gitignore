@@ -53,3 +53,4 @@ target/
 
 # Other
 migrations/
+node_modules/
