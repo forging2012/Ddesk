@@ -2,7 +2,7 @@
     {% if messages %}
         {% for category, msg in messages  %}
             <div class="notification {{ category }}">
-                <button class="delete"></button>
+                <button class="delete" type="button"></button>
                 {{ msg }}
             </div>
         {% endfor %}

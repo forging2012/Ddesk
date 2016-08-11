@@ -1,6 +1,6 @@
 {% if form.errors %}
     <div class="notification is-danger">
-        <button class="delete"></button>
+        <button class="delete" type="button"></button>
         {% for field_name, field_errors in form.errors|dictsort if field_errors %}
             {% for error in field_errors %}
                 {{ error }}
