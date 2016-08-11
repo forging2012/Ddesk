@@ -6,10 +6,7 @@ from flask.ext.wtf.file import FileField, FileAllowed, FileRequired
 from wtforms_components import SelectField as SelectField2, SelectMultipleField
 
 
-class AddQuestionForm(Form):
-    category = SelectField('针对产品线', validators=[DataRequired('请选择针对的产品线。')], coerce=int)
-    details = TextAreaField('问题', validators=[DataRequired('请描述您的问题。')])
-    submit = SubmitField('提交')
+
 
 
 class AddDemandForm(Form):
@@ -133,11 +130,23 @@ class AdminAdminEditForm(Form):
     submit = SubmitField('保存')
 
 
+# 前言部分
+
+# 新增问题
+class FrontQuestionForm(Form):
+    category = SelectField('针对产品或业务', validators=[DataRequired('请选择针对产品或业务。')], coerce=int)
+    details = TextAreaField('详细说明', validators=[DataRequired('请填写详细说明。')])
+    submit = SubmitField('')
+
+
+# 后台部分
+
 # 网站基本信息配置
 class AdminConfigForm(Form):
     title = StringField('网站Title', validators=[DataRequired('网站Title必填！')])
     subtitle = StringField('网站副标题', validators=[DataRequired('网站副标题必填！')])
     submit = SubmitField('更新')
+
 
 
 

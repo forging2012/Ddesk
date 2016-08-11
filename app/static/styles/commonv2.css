@@ -5,18 +5,23 @@ body {
     display: none;
 }
 
+/* header */
+
+.header {
+    padding: 10px 0;
+    margin-bottom: 20px;
+    background-color: #fff;
+}
+
 /* Form */
 
-.button {
+form .button, .select select, select, .select {
     width: 100%;
     height: 40px;
     display: block;
 }
-.input {
+form .input {
     height: 40px;
-}
-form .text {
-    margin: 10px 0;
 }
 form .submit {
     margin: 20px 0;
@@ -30,4 +35,11 @@ form .submit {
 .login-form {
     max-width: 300px;
     margin: 50px auto 100px;
+}
+
+/* Question */
+
+.que-form {
+    max-width: 650px;
+    margin: 10px auto;
 }

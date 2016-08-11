@@ -6,73 +6,91 @@
     <!--Import Icon Font-->
     <link href="../static/node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="../static/node_modules/materialize-css/dist/css/materialize.min.css" media="screen,projection" />
-
+    <link type="text/css" rel="stylesheet" href="../static/node_modules/bulma/css/bulma.css" media="screen,projection" />
     <!--Import common.css-->
-    <link href="../static/styles/common.min.css" rel="stylesheet">
-
+    <link href="../static/styles/commonv2.min.css" rel="stylesheet">
     <!-- Simditor -->
     <link href="../static/node_modules/simditor/styles/simditor.css" rel="stylesheet" type="text/css">
+    <!--Import favicon-->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <title>{{ web_title.value }}</title>
+    <title>{{ web_title }} - 提问题、建议、Bug | {{ web_subtitle }}</title>
 </head>
 
 <body>
-    <!-- header -->
-    {% include '_header1.html' %}
-    <!-- main -->
-    <div class="container">
-        <div class="row"></div>
-        <div class="row"></div>
-        <div class="row">
-            <h5>提问题</h5>
-        </div>
-        <div class="row">很抱歉，让您有这样或那样的问题。我们一般三工作日内给您答复。</div>
-        <form id="qForm" action="" method="post">
+    {% include '_header.html' %}
+
+    <section class="section">
+        <form class="que-form" action="" method="post">
+            {% include '_flashMsg.html' %}
+            {% include '_formMsg.html' %}
             {{ form.hidden_tag() }}
-            <div class="row">
-                {{ form.category(class="browser-default") }}
+            <div class="notification">
+                <button class="delete" type="button"></button>
+                您有任何针对网站产品的问题或建议，以及发现网站错误（Bug）或不正常之处，您可以随时通过这里反馈给技术产品部。
             </div>
-            <div class="row">
-                {{ form.details(id="newTextarea", placeholder="在这里写你的问题，可以上传图片。") }}
+            {{ form.category.label(class="label") }}
+            <p class="control">
+                <span class="select">
+                    {{ form.category(class="select") }}
+              </span>
+            </p>
+            {{ form.details.label(class="label") }}
+            <p class="control">
+                {{ form.details(id="details", class="textarea", placeholder="请填写详细说明，可以上传图片。") }}
+            </p>
+            <div class="content">
+                <blockquote>您的联系信息：{{ current_user.username }}， {{ current_user.tel }}
+                    <p class="help">若联系信息有误请告知技术产品部任意产品经理修改</p>
+                </blockquote>
             </div>
-            <div class="row">您的联系信息：{{ current_user.username }}， {{ current_user.tel }}（若不正确联系汪璐莹修改）。</div>
-            <div class="row">
-                <a class="waves-effect waves-light btn-large col s3 blue-grey darken-4"  onclick="document.getElementById('qForm').submit();">提交</a>
+            <div class="submit">
+                <button class="button is-dark" type="submit">提交</button>
             </div>
         </form>
-    </div>
-    <!-- footer -->
-    {% include '_footer1.html' %}
+    </section>
 
-    <!--Import jQuery before materialize.js-->
+    <footer class="footer">
+        <div class="container">
+            <div class="content has-text-centered">
+                <p>
+                    <strong>Ddesk</strong> by <a href="http://duzhipeng.com" target="_blank">Zhipeng Du</a>. The source code is licensed
+                    <a href="http://opensource.org/licenses/mit-license.php" target="_blank">MIT</a>.
+                </p>
+                <p>
+                    <a class="icon" href="https://github.com/duzhipeng/Ddesk" target="_blank">
+                        <i class="fa fa-github"></i>
+                    </a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!--Import jQuery-->
     <script type="text/javascript" src="../static/node_modules/jquery/dist/jquery.min.js"></script>
-    <script type="text/javascript" src="../static/node_modules/materialize-css/dist/js/materialize.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $(".button-collapse").sideNav();
-        })
-    </script>
+    <script src="../static/scripts/common.min.js" charset="utf-8"></script>
+
     <!-- Simditor -->
     <script type="text/javascript" src="../static/node_modules/simple-module/lib/module.js"></script>
     <script type="text/javascript" src="../static/node_modules/simple-hotkeys/lib/hotkeys.js"></script>
     <script type="text/javascript" src="../static/node_modules/simple-uploader/lib/uploader.js"></script>
     <script type="text/javascript" src="../static/node_modules/simditor/lib/simditor.js"></script>
     <script>
-        var goods_detail = new Simditor({
-            textarea: $('#newTextarea'),
+        var new_textarea = new Simditor({
+            textarea: $('#details'),
             toolbar: ['bold', 'strikethrough', 'color', 'ol', 'blockquote', 'image', 'hr'],
             upload: {
-                url: '{{ url_for('.api_upyun') }}',
+                url: '{{ url_for('.upyun') }}',
                 fileKey: 'detail_img'
             },
             imageButton: ['upload']
         });
     </script>
+
 </body>
 
 </html>

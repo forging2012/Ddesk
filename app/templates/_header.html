@@ -1,10 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<header class="header">
+    <nav class="nav">
+        <div class="container">
+            <div class="nav-left">
+                <a class="nav-item is-brand" href="{{ url_for('.index') }}"><h5 class="title is-5">{{ web_title }}</h5></a>
+            </div>
+            <span id="nav-toggle" class="nav-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+            </span>
+            <div id="nav-menu" class="nav-right nav-menu is-active">
+                <a class="nav-item" href="{{ url_for('.index') }}">公告板</a>
+                <a class="nav-item" href="{{ url_for('.add_question') }}">提问题、建议、Bug</a>
+                <a class="nav-item" href="{{ url_for('.add_demand') }}">提需求</a>
+                <a class="nav-item" href="{{ url_for('.query') }}">处理进度</a>
+                <a class="nav-item" href="{{ url_for('.version') }}">产品迭代看板</a>
+            </div>
+        </div>
+    </nav>
+</header>
