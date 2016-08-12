@@ -1,8 +1,9 @@
 alembic==0.8.6
+click==6.6
 decorator==4.0.10
-Flask==0.10.1
+Flask==0.11.1
 Flask-Login==0.3.2
-Flask-Migrate==1.8.0
+Flask-Migrate==2.0.0
 Flask-Script==2.0.5
 Flask-SQLAlchemy==2.1
 Flask-WTF==0.12
@@ -14,12 +15,11 @@ Mako==1.0.4
 MarkupSafe==0.23
 PyMySQL==0.7.2
 python-editor==1.0
-requests==2.9.1
+requests==2.11.0
 six==1.10.0
 SQLAlchemy==1.0.12
-upyun==2.3.0
+upyun==2.3.5
 validators==0.10.1
-Werkzeug==0.11.4
-wheel==0.29.0
+Werkzeug==0.11.10
 WTForms==2.1
 WTForms-Components==0.10.0
