@@ -79,7 +79,7 @@
                  {{ form.details(id="details", class="textarea", placeholder="请填写详细说明，可以上传图片。") }}
             </p>
             <div class="content">
-                <blockquote>您的联系信息：徐桢， 13482675570 <a href="{{ url_for('.logout') }}">退出</a>
+                <blockquote>您的联系信息：{{ current_user.username }}， {{ current_user.tel }} <a href="{{ url_for('.logout') }}">退出</a>
                     <p class="help">若联系信息有误请告知技术产品部任意产品经理修改</p>
                 </blockquote>
             </div>
