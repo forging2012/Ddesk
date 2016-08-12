@@ -60,6 +60,14 @@
                     <div class="form-group">
                         <label>需求类型：{{ type }}</label>
                     </div>
+                    {% if support %}
+                     <div class="form-group">
+                        <label>支持内容：{{ support }}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>设计类型：{{ des_type }}</label>
+                    </div>
+                    {% else %}
                     <div class="form-group">
                         <label>需求受众：{{ audience }}</label>
                     </div>
@@ -69,17 +77,15 @@
                     <div class="form-group">
                         <label>产品线：{{ this_demand.category.name }}</label>
                     </div>
+                    {% endif %}
                     <div class="form-group">
-                        <label>需求进展：{{ DEMAND_STATUS[this_demand.status] }}</label>
+                        <label>处理进度：{{ DEMAND_STATUS[this_demand.status] }}</label>
                     </div>
                     <div class="form-group">
                         <label>发起人信息：{{ this_demand.create_customer.username }}, {{ this_demand.create_customer.tel }}</label>
                     </div>
                     <div class="form-group">
                         <label>原始需求：{{ this_demand.details|safe }}</label>
-                    </div>
-                    <div class="form-group">
-                        <label>附件：{{ this_demand.attachment|safe }}</label>
                     </div>
                     <form action="" method="post">
                         {{ form.hidden_tag() }}

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from . import admin
 from flask import render_template, request, redirect, url_for, flash
-from flask.ext.login import login_required
+from flask_login import login_required
 from ..forms import AdminDemandForm
 from app import config
 from datetime import datetime
@@ -55,34 +55,77 @@ def demand():
 def edit_demand():
     this_demand = Demand.query.get(request.args.get('demand_id'))
     type = Tag.query.get(this_demand.type_id)
-    audience = Tag.query.get(this_demand.audience_id)
-    source = Tag.query.get(this_demand.source_id)
-    form = AdminDemandForm(feedback=this_demand.feedback, status=this_demand.status, title=this_demand.title)
-    all_admin = Admin.query.all()
-    form.assignee.choices = [(admin.id, admin.name) for admin in all_admin]
-    if this_demand.assignee_id is None:
-        form.assignee.choices.insert(0, (0, '请选择'))
+    if type.id == 47:
+        supports = eval(this_demand.support_id)
+        support1 = ''
+        support2 = ''
+        support3 = ''
+        if supports.get(40):
+            support1 = '宣传  '
+        if supports.get(39):
+            support2 = '品牌  '
+        if supports.get(38):
+            support3 = '设计  '
+        support = support1 + support2 + support3
+        des_type = Tag.query.get(this_demand.des_type_id)
+        form = AdminDemandForm(feedback=this_demand.feedback, status=this_demand.status, title=this_demand.title)
+        all_admin = Admin.query.all()
+        form.assignee.choices = [(admin.id, admin.name) for admin in all_admin]
+        if this_demand.assignee_id is None:
+            form.assignee.choices.insert(0, (0, '请选择'))
+        else:
+            form.assignee.choices.remove((this_demand.assignee.id, this_demand.assignee.name))
+            form.assignee.choices.insert(0, (this_demand.assignee.id, this_demand.assignee.name))
+        if form.validate_on_submit():
+            phone_number = this_demand.create_customer.tel
+            name = this_demand.create_customer.username
+            if this_demand.status != form.status.data:
+                sms_demand(phone_number=phone_number, name=name, sub=form.title.data,
+                           state=config.DEMAND_STATUS[form.status.data])
+            if this_demand.assignee_id != form.assignee.data:
+                this_admin = Admin.query.get(int(form.assignee.data))
+                sms_demand_a(phone_number=this_admin.tel, name1=this_admin.name, name2=name)
+            if form.feedback.data:
+                this_demand.feedback = form.feedback.data
+            this_demand.status = form.status.data
+            this_demand.title = form.title.data
+            this_demand.assignee_id = form.assignee.data
+            this_demand.modify_time = datetime.now()
+            db.session.add(this_demand)
+            db.session.commit()
+            flash('需求信息已更新。', 'alert-success')
+            return redirect(url_for('.demand'))
+        return render_template('admin/demand-edit.html', this_demand=this_demand, DEMAND_STATUS=config.DEMAND_STATUS,
+                               form=form, Tag=Tag, type=type.name, support=support, des_type=des_type.name)
     else:
-        form.assignee.choices.remove((this_demand.assignee.id, this_demand.assignee.name))
-        form.assignee.choices.insert(0, (this_demand.assignee.id, this_demand.assignee.name))
-    if form.validate_on_submit():
-        phone_number = this_demand.create_customer.tel
-        name = this_demand.create_customer.username
-        if this_demand.status != form.status.data:
-            sms_demand(phone_number=phone_number, name=name, sub=form.title.data,
-                       state=config.DEMAND_STATUS[form.status.data])
-        if this_demand.assignee_id != form.assignee.data:
-            this_admin = Admin.query.get(int(form.assignee.data))
-            sms_demand_a(phone_number=this_admin.tel, name1=this_admin.name, name2=name)
-        if form.feedback.data:
-            this_demand.feedback = form.feedback.data
-        this_demand.status = form.status.data
-        this_demand.title = form.title.data
-        this_demand.assignee_id = form.assignee.data
-        this_demand.modify_time = datetime.now()
-        db.session.add(this_demand)
-        db.session.commit()
-        flash('需求信息已更新。', 'alert-success')
-        return redirect(url_for('.demand'))
-    return render_template('admin/demand-edit.html', this_demand=this_demand, DEMAND_STATUS=config.DEMAND_STATUS,
-                           form=form, Tag=Tag, type=type.name, audience=audience.name, source=source.name)
+        audience = Tag.query.get(this_demand.audience_id)
+        source = Tag.query.get(this_demand.source_id)
+        form = AdminDemandForm(feedback=this_demand.feedback, status=this_demand.status, title=this_demand.title)
+        all_admin = Admin.query.all()
+        form.assignee.choices = [(admin.id, admin.name) for admin in all_admin]
+        if this_demand.assignee_id is None:
+            form.assignee.choices.insert(0, (0, '请选择'))
+        else:
+            form.assignee.choices.remove((this_demand.assignee.id, this_demand.assignee.name))
+            form.assignee.choices.insert(0, (this_demand.assignee.id, this_demand.assignee.name))
+        if form.validate_on_submit():
+            phone_number = this_demand.create_customer.tel
+            name = this_demand.create_customer.username
+            if this_demand.status != form.status.data:
+                sms_demand(phone_number=phone_number, name=name, sub=form.title.data,
+                           state=config.DEMAND_STATUS[form.status.data])
+            if this_demand.assignee_id != form.assignee.data:
+                this_admin = Admin.query.get(int(form.assignee.data))
+                sms_demand_a(phone_number=this_admin.tel, name1=this_admin.name, name2=name)
+            if form.feedback.data:
+                this_demand.feedback = form.feedback.data
+            this_demand.status = form.status.data
+            this_demand.title = form.title.data
+            this_demand.assignee_id = form.assignee.data
+            this_demand.modify_time = datetime.now()
+            db.session.add(this_demand)
+            db.session.commit()
+            flash('需求信息已更新。', 'alert-success')
+            return redirect(url_for('.demand'))
+        return render_template('admin/demand-edit.html', this_demand=this_demand, DEMAND_STATUS=config.DEMAND_STATUS,
+                               form=form, Tag=Tag, type=type.name, audience=audience.name, source=source.name)

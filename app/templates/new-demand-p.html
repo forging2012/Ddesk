@@ -18,36 +18,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <title>{{ web_title }} - 提问题、建议、Bug | {{ web_subtitle }}</title>
+    <title>{{ web_title }} - 提产品需求 | {{ web_subtitle }}</title>
 </head>
 
 <body>
     {% include '_header.html' %}
 
     <section class="section">
-        <form class="que-form" action="" method="post">
+        <div class="de-nav">
+            <div class="tabs is-toggle is-fullwidth">
+                <ul>
+                    <li class="is-active">
+                        <a href="{{ url_for('.add_demand', c='p') }}">
+                            <span class="icon is-small"><i class="fa fa-file-text-o"></i></span>
+                            <span>产品需求</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('.add_demand', c='d') }}">
+                            <span class="icon is-small"><i class="fa fa-image"></i></span>
+                            <span>设计需求</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <form class="de-form" action="" method="post">
             {% include '_flashMsg.html' %}
             {% include '_formMsg.html' %}
             {{ form.hidden_tag() }}
             <div class="notification">
                 <button class="delete" type="button"></button>
-                您有任何针对网站产品的问题或建议，以及发现网站错误（Bug）或不正常之处，您可以随时通过这里反馈给技术产品部。
+                <p>在您与产品经理初步沟通后，在这里提出您针对网站产品或业务的具体需求。</p>
+                <p>因运营需要所需的设计类需求，不属于产品需求，无需与产品经理沟通，请您直接进入「设计需求」栏目向设计师提出。</p>
             </div>
+            {{ form.type.label(class="label") }}
+            <p class="control">
+                <span class="select">
+                    {{ form.type }}
+              </span>
+            </p>
+            {{ form.audience.label(class="label") }}
+            <p class="control">
+                <span class="select">
+                    {{ form.audience}}
+              </span>
+            </p>
+            {{ form.source.label(class="label") }}
+            <p class="control">
+                <span class="select">
+                    {{ form.source}}
+              </span>
+            </p>
             {{ form.category.label(class="label") }}
             <p class="control">
                 <span class="select">
-                    {{ form.category }}
+                    {{ form.category}}
               </span>
             </p>
-            {{ form.details.label(class="label") }}
+            <label class="label">{{ form.details.label(class="label") }}</label>
             <p class="control">
                 {{ form.details(id="details", class="textarea", placeholder="请填写详细说明，可以上传图片。") }}
             </p>
+            <p class="content">产品经理可能会要求您提供《需求申请表》等附件，<a href="">请您点击这里下载</a>，填写完毕后直接发给之前与您沟通的产品经理。</p>
             <div class="content">
-                <blockquote>您的联系信息：{{ current_user.username }}， {{ current_user.tel }} <a href="{{ url_for('.logout') }}">退出</a>
+                <blockquote>您的联系信息：徐桢， 13482675570 <a href="">退出</a>
                     <p class="help">若联系信息有误请告知技术产品部任意产品经理修改</p>
                 </blockquote>
             </div>
+
             <div class="submit">
                 <button class="button is-dark" type="submit">提交</button>
             </div>

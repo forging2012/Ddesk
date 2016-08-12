@@ -2,7 +2,7 @@
 from . import admin
 from app.forms import AdminCustomerForm
 from flask import render_template, redirect, url_for, flash, request
-from flask.ext.login import login_required
+from flask_login import login_required
 from ..models import db, Customer
 
 

@@ -18,7 +18,7 @@ __mtime__ = '6/7/16'
                   ┗┻┛  ┗┻┛
 """
 from . import admin
-from flask.ext.login import login_required
+from flask_login import login_required
 from flask import render_template, redirect, url_for, flash, request
 from app.forms import AdminAdminForm, AdminAdminEditForm
 

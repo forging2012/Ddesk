@@ -11,16 +11,18 @@
             </span>
             <div id="nav-menu" class="nav-right nav-menu">
                 <a class="nav-item" href="{{ url_for('.index') }}">公告板</a>
-                <a class="nav-item" href="{{ url_for('.add_demand') }}">提需求</a>
+                <a class="nav-item" href="{{ url_for('.add_demand', c='p') }}">提需求</a>
                 <a class="nav-item" href="{{ url_for('.add_question') }}">问题与建议</a>
                 <a class="nav-item" href="{{ url_for('.query') }}">查看处理进度</a>
                 <a class="nav-item" href="{{ url_for('.version') }}">产品迭代看板</a>
             </div>
+            <!--
             <span class="nav-item">
                 <a class="button is-primary" href="#">
                     <span>商店(装修中)</span>
                 </a>
             </span>
+            -->
         </div>
     </nav>
 </header>

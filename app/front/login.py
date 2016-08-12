@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from . import front
 from flask import render_template, request, redirect, url_for, flash
-from ..forms import LoginForm
-from flask_login import login_user
+from ..forms import FrontLoginForm
+from flask_login import login_user, logout_user
 from ..models import Customer, Config
 
 
@@ -16,7 +16,7 @@ def login():
         web_title = old_title.value
     if old_subtitle:
         web_subtitle = old_subtitle.value
-    form = LoginForm()
+    form = FrontLoginForm()
     if form.validate_on_submit():
         user = Customer.query.filter_by(username=form.username.data, tel=form.tel.data).first()
         if user is not None:
@@ -25,3 +25,9 @@ def login():
         else:
             flash('姓名或手机错误，请重新输入。', 'is-danger')
     return render_template('login.html', form=form, web_title=web_title, web_subtitle=web_subtitle)
+
+
+@front.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('.login'))

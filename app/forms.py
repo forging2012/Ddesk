@@ -1,27 +1,8 @@
 # -*- coding: utf-8 -*-
-from flask.ext.wtf import Form
-from wtforms import StringField, PasswordField, SubmitField, FloatField, TextAreaField, SelectField, HiddenField, IntegerField, BooleanField, RadioField, DateTimeField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from flask.ext.wtf.file import FileField, FileAllowed, FileRequired
+from flask_wtf import Form
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField, SelectField, IntegerField, BooleanField, DateTimeField
+from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
 from wtforms_components import SelectField as SelectField2, SelectMultipleField
-
-
-
-
-
-class AddDemandForm(Form):
-    type = SelectField('需求类型', validators=[DataRequired('请选需求类型。')], coerce=int)
-    audience = SelectField('需求受众', validators=[DataRequired('请选需求受众。')], coerce=int)
-    source = SelectField('需求来源', validators=[DataRequired('请选需求来源。')], coerce=int)
-    category = SelectField('针对产品线', validators=[DataRequired('请选择针对的产品线。')], coerce=int)
-    details = TextAreaField('需求', validators=[DataRequired('请描述您的需求。')])
-    submit = SubmitField('提交')
-
-
-class LoginForm(Form):
-    username = StringField('姓名', validators=[DataRequired('请填写姓名。')])
-    tel = StringField('手机号', validators=[DataRequired('请填写手机号。')])
-    submit = SubmitField('登录')
 
 
 # 登录
@@ -132,11 +113,38 @@ class AdminAdminEditForm(Form):
 
 # 前言部分
 
+# 用户登录
+class FrontLoginForm(Form):
+    username = StringField('姓名', validators=[DataRequired('请填写姓名。')])
+    tel = StringField('手机号', validators=[DataRequired('请填写手机号。')])
+    submit = SubmitField('登录')
+
+
 # 新增问题
 class FrontQuestionForm(Form):
     category = SelectField('针对产品或业务', validators=[DataRequired('请选择针对产品或业务。')], coerce=int)
     details = TextAreaField('详细说明', validators=[DataRequired('请填写详细说明。')])
-    submit = SubmitField('')
+    submit = SubmitField('提交')
+
+
+# 新增产品需求
+class AddProDemandForm(Form):
+    type = SelectField('需求类型', validators=[DataRequired('请选择需求类型。')], coerce=int)
+    audience = SelectField('需求受众', validators=[DataRequired('请选择需求受众。')], coerce=int)
+    source = SelectField('需求来源', validators=[DataRequired('请选择需求来源。')], coerce=int)
+    category = SelectField('针对产品线或业务', validators=[DataRequired('请选择针对的产品线。')], coerce=int)
+    details = TextAreaField('详细说明', validators=[DataRequired('请填写详细说明。')])
+    submit = SubmitField('提交')
+
+
+# 新增设计需求
+class AddDesDemandForm(Form):
+    support1 = BooleanField('宣传')
+    support2 = BooleanField('品牌')
+    support3 = BooleanField('设计')
+    des_type = SelectField('设计类型', validators=[DataRequired('请选择设计类型。')], coerce=int)
+    details = TextAreaField('需求', validators=[DataRequired('请描述您的需求。')])
+    submit = SubmitField('提交')
 
 
 # 后台部分

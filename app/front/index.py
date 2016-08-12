@@ -2,7 +2,7 @@
 from . import front
 from flask import render_template
 from ..models import Config
-from flask.ext.login import login_required
+from flask_login import login_required
 
 
 @front.route('/')

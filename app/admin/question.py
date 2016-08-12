@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from . import admin
 from flask import render_template, request, redirect, url_for, flash
-from flask.ext.login import login_required
+from flask_login import login_required
 from ..forms import AdminQuestionForm
 from app import config
 import json

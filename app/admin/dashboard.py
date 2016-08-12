@@ -2,7 +2,7 @@
 from app import app
 from . import admin
 from flask import render_template, redirect, url_for, send_from_directory, request
-from flask.ext.login import login_required
+from flask_login import login_required
 
 
 @admin.route('/')

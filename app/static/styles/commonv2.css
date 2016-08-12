@@ -43,3 +43,14 @@ form .submit {
     max-width: 650px;
     margin: 10px auto;
 }
+
+/* Demand */
+
+.de-nav {
+    max-width: 650px;
+    margin: 0 auto 20px;
+}
+.de-form {
+    max-width: 650px;
+    margin: 10px auto;
+}

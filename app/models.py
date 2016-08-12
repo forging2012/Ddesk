@@ -1,21 +1,12 @@
 # -*- coding: utf-8 -*-
 from . import db
-from flask.ext.login import UserMixin
+from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-
-from flask.ext.script import Manager
-from flask.ext.migrate import Migrate, MigrateCommand
-from . import app
-
-migrate = Migrate(app, db)
-manager = Manager(app)
-manager.add_command('db', MigrateCommand)
 
 
 class AdminLine(db.Model):
     __tablename__ = 'admin_line'
-    __table_args__ = {"useexisting": True}
     admin_id = db.Column(db.Integer, db.ForeignKey('admin.id'), primary_key=True)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), primary_key=True)
     timestamp = db.Column(db.DateTime, default=datetime.now)
@@ -23,7 +14,6 @@ class AdminLine(db.Model):
 
 class Admin(UserMixin, db.Model):
     __tablename__ = 'admin'  # 内部用户表
-    __table_args__ = {"useexisting": True}
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(60), unique=True)  # 用户名
     name = db.Column(db.String(10))  # 真实姓名
@@ -69,7 +59,6 @@ class Admin(UserMixin, db.Model):
 
 class Customer(UserMixin, db.Model):
     __tablename__ = 'customer'
-    __table_args__ = {"useexisting": True}
     id = db.Column(db.Integer, primary_key=True)
     tel = db.Column(db.String(20), unique=True)  # 电话
     email = db.Column(db.String(64), unique=True)  # 邮箱
@@ -99,7 +88,6 @@ class Customer(UserMixin, db.Model):
 
 class Question(db.Model):
     __tablename__ = 'question'
-    __table_args__ = {"useexisting": True}
     id = db.Column(db.Integer, primary_key=True)
     id_hash = db.Column(db.String(128), unique=True)
     own_customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))  # 问题所属用户
@@ -123,7 +111,6 @@ class Question(db.Model):
 
 class Demand(db.Model):
     __tablename__ = 'demand'
-    __table_args__ = {"useexisting": True}
     id = db.Column(db.Integer, primary_key=True)
     id_hash = db.Column(db.String(128), unique=True)
     own_customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))  # 需求所属用户
@@ -132,6 +119,8 @@ class Demand(db.Model):
     type_id = db.Column(db.Integer)  # 需求类型
     audience_id = db.Column(db.Integer)  # 需求受众
     source_id = db.Column(db.Integer)  # 需求来源
+    support_id = db.Column(db.String(100))  # 支持内容
+    des_type_id = db.Column(db.Integer)  # 设计类型
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))  # 所属分类ID
     details = db.Column(db.Text, default='')  # 需求详情
     attachment = db.Column(db.Text, default='')  # 附件地址
@@ -157,7 +146,6 @@ class Demand(db.Model):
 
 class Version(db.Model):
     __tablename__ = 'version'
-    __table_args__ = {"useexisting": True}
     id = db.Column(db.Integer, primary_key=True)
     pro_line = db.Column(db.Integer, db.ForeignKey('tag.id'))  # 产品线
     num = db.Column(db.String(10))  # 版本号
@@ -172,7 +160,6 @@ class Version(db.Model):
 
 class Category(db.Model):
     __tablename__ = 'category'
-    __table_args__ = {"useexisting": True}
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(10))  # 类目名
     parents = db.relationship('Category', uselist=False, remote_side=id)  # 上级分类对象
@@ -190,13 +177,13 @@ class Category(db.Model):
 
 class Tag(db.Model):
     __tablename__ = 'tag'
-    __table_args__ = {"useexisting": True}
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30))  # tag名
     sequence = db.Column(db.Integer, default=0)  # 排序:小数靠前,大数靠后
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))  # 所属分类ID
     page = db.relationship('Page', backref='tag')  # tag下所属文章
     version = db.relationship('Version', backref='tag')  # tag下所属版本
+    status = db.Column(db.Boolean, default=1)  # 启用/弃用
 
     def __repr__(self):
         return "<Tag '{:s}>".format(self.name)
@@ -204,7 +191,6 @@ class Tag(db.Model):
 
 class Page(db.Model):
     __tablename__ = 'page'
-    __table_args__ = {"useexisting": True}
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(20))  # 文章标题
     text = db.Column(db.Text)  # 正文
@@ -218,12 +204,7 @@ class Page(db.Model):
 
 class Config(db.Model):
     __tablename__ = 'config'
-    __table_args__ = {"useexisting": True}
     key = db.Column(db.String(64), primary_key=True)  # 配置名
     value = db.Column(db.Text)  # 配置值
-
-
-if __name__ == '__main__':
-    manager.run()
 
 

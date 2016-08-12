@@ -2,7 +2,7 @@
 from . import admin
 from app.forms import AdminVersionForm
 from flask import render_template, redirect, flash, url_for, request
-from flask.ext.login import login_required
+from flask_login import login_required
 
 
 @admin.route('/version')

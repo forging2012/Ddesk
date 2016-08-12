@@ -18,36 +18,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <title>{{ web_title }} - 提问题、建议、Bug | {{ web_subtitle }}</title>
+    <title>{{ web_title }} - 提设计需求 | {{ web_subtitle }}</title>
 </head>
 
 <body>
     {% include '_header.html' %}
 
     <section class="section">
-        <form class="que-form" action="" method="post">
+        <div class="de-nav">
+            <div class="tabs is-toggle is-fullwidth">
+                <ul>
+                    <li>
+                        <a href="{{ url_for('.add_demand', c='p') }}">
+                            <span class="icon is-small"><i class="fa fa-file-text-o"></i></span>
+                            <span>产品需求</span>
+                        </a>
+                    </li>
+                    <li class="is-active">
+                        <a href="{{ url_for('.add_demand', c='d') }}">
+                            <span class="icon is-small"><i class="fa fa-image"></i></span>
+                            <span>设计需求</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <form class="de-form" action="" method="post">
             {% include '_flashMsg.html' %}
             {% include '_formMsg.html' %}
             {{ form.hidden_tag() }}
             <div class="notification">
                 <button class="delete" type="button"></button>
-                您有任何针对网站产品的问题或建议，以及发现网站错误（Bug）或不正常之处，您可以随时通过这里反馈给技术产品部。
+                <p>向设计师提出设计类需求，如有关具体网站产品、界面改动，请先与产品经理确认。</p>
+                <p>设计需求须知：</p>
+                <p>1.需求提交请提前7天申请；</p>
+                <p>2.需求确认后，如需求有变更，上线时间将进行相应调整；</p>
+                <p>3.具体物料种类和尺寸请参照《基础物料清单》（找设计师索取），如有特殊尺寸请说明清楚；</p>
+                <p>4.若主办方或者参与方对颜色和素材有特殊要求也请在详细说明里写明。</p>
             </div>
-            {{ form.category.label(class="label") }}
+            <label class="label">支持内容</label>
+            <p class="control">
+              <label class="checkbox">
+                {{ form.support1 }} {{ form.support1.label }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </label>
+                <label class="checkbox">
+                   {{ form.support2 }} {{ form.support2.label }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </label>
+                <label class="checkbox">
+                   {{ form.support3 }} {{ form.support3.label }}
+                </label>
+            </p>
+            {{ form.des_type.label(class="label") }}
             <p class="control">
                 <span class="select">
-                    {{ form.category }}
+                    {{ form.des_type }}
               </span>
             </p>
-            {{ form.details.label(class="label") }}
+            <label class="label">详细说明</label>
             <p class="control">
-                {{ form.details(id="details", class="textarea", placeholder="请填写详细说明，可以上传图片。") }}
+                 {{ form.details(id="details", class="textarea", placeholder="请填写详细说明，可以上传图片。") }}
             </p>
             <div class="content">
-                <blockquote>您的联系信息：{{ current_user.username }}， {{ current_user.tel }} <a href="{{ url_for('.logout') }}">退出</a>
+                <blockquote>您的联系信息：徐桢， 13482675570 <a href="">退出</a>
                     <p class="help">若联系信息有误请告知技术产品部任意产品经理修改</p>
                 </blockquote>
             </div>
+
             <div class="submit">
                 <button class="button is-dark" type="submit">提交</button>
             </div>

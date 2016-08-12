@@ -6,7 +6,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="{{ url_for('.index') }}">产品事务处理系统(v1.0.0.b0)</a>
+        <a class="navbar-brand" href="{{ url_for('.index') }}">产品事务处理系统(v1.0.0.b2)</a>
     </div>
     <!-- /.navbar-header -->
 
@@ -256,7 +256,7 @@
                     <a href="#"><i class="fa fa-cog fa-fw"></i> 系统设置<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="{{ url_for('.tag') }}">tag设置</a>
+                            <a href="{{ url_for('.tag', status=1) }}">tag设置</a>
                         </li>
                         <li>
                             <a href="{{ url_for('.category') }}">分类设置</a>
