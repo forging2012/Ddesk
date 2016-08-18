@@ -33,6 +33,8 @@ def query_details():
     assignee = None
     title = None
     status = None
+    p_done_time = None
+    t_done_time = None
     if cid == '1':
         this_question = Question.query.get_or_404(pid)
         create_time = this_question.create_time
@@ -57,5 +59,7 @@ def query_details():
             assignee = '待分派'
         title = this_demand.title
         status = config.DEMAND_STATUS[this_demand.status]
+        p_done_time = this_demand.p_done_time
+        t_done_time = this_demand.t_done_time
     return render_template('query-details.html', create_time=create_time, create_customer=create_customer,
-                           details=details, feedback=feedback, assignee=assignee, title=title, status=status, web_title=web_title)
+                           details=details, feedback=feedback, assignee=assignee, title=title, status=status, web_title=web_title, p_done_time=p_done_time, t_done_time=t_done_time)

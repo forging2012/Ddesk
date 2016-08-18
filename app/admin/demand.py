@@ -68,7 +68,7 @@ def edit_demand():
             support3 = '设计  '
         support = support1 + support2 + support3
         des_type = Tag.query.get(this_demand.des_type_id)
-        form = AdminDemandForm(feedback=this_demand.feedback, status=this_demand.status, title=this_demand.title)
+        form = AdminDemandForm(feedback=this_demand.feedback, status=this_demand.status, title=this_demand.title, p_done_time=this_demand.p_done_time)
         all_admin = Admin.query.all()
         form.assignee.choices = [(admin.id, admin.name) for admin in all_admin]
         if this_demand.assignee_id is None:
@@ -87,6 +87,10 @@ def edit_demand():
                 sms_demand_a(phone_number=this_admin.tel, name1=this_admin.name, name2=name)
             if form.feedback.data:
                 this_demand.feedback = form.feedback.data
+            if form.p_done_time.data:
+                this_demand.p_done_time = form.p_done_time.data
+            else:
+                this_demand.p_done_time = None
             this_demand.status = form.status.data
             this_demand.title = form.title.data
             this_demand.assignee_id = form.assignee.data
@@ -100,7 +104,7 @@ def edit_demand():
     else:
         audience = Tag.query.get(this_demand.audience_id)
         source = Tag.query.get(this_demand.source_id)
-        form = AdminDemandForm(feedback=this_demand.feedback, status=this_demand.status, title=this_demand.title)
+        form = AdminDemandForm(feedback=this_demand.feedback, status=this_demand.status, title=this_demand.title, t_done_time=this_demand.t_done_time, p_done_time=this_demand.p_done_time)
         all_admin = Admin.query.all()
         form.assignee.choices = [(admin.id, admin.name) for admin in all_admin]
         if this_demand.assignee_id is None:
@@ -119,6 +123,14 @@ def edit_demand():
                 sms_demand_a(phone_number=this_admin.tel, name1=this_admin.name, name2=name)
             if form.feedback.data:
                 this_demand.feedback = form.feedback.data
+            if form.p_done_time.data:
+                this_demand.p_done_time = form.p_done_time.data
+            else:
+                this_demand.p_done_time = None
+            if form.t_done_time.data:
+                this_demand.t_done_time = form.t_done_time.data
+            else:
+                this_demand.t_done_time = None
             this_demand.status = form.status.data
             this_demand.title = form.title.data
             this_demand.assignee_id = form.assignee.data

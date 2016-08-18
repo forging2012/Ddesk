@@ -137,8 +137,10 @@ class Demand(db.Model):
     100 不实现
     '''
     feedback = db.Column(db.Text, default='')  # 反馈详情
-    create_time = db.Column(db.DateTime, default=datetime.now)  # 账号创建时间
-    modify_time = db.Column(db.DateTime, default=datetime.now)  # 账号修改时间
+    create_time = db.Column(db.DateTime, default=datetime.now)  # 创建时间
+    modify_time = db.Column(db.DateTime, default=datetime.now)  # 最后修改时间
+    p_done_time = db.Column(db.DateTime)  # 产品预计完成时间
+    t_done_time = db.Column(db.DateTime)  # 技术预计完成时间
 
     def __repr__(self):
         return "<Question '{:s}>".format(self.id)

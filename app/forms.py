@@ -24,18 +24,7 @@ class AdminQuestionForm(Form):
     submit = SubmitField('更新')
 
 
-# 更新需求
-class AdminDemandForm(Form):
-    title = StringField('需求概述', validators=[DataRequired('需求概述必填。')])
-    feedback = TextAreaField('反馈内容')
-    status = SelectField('处理进度', validators=[DataRequired('处理进度必选。')], choices=[(0, '请选择'), (100, '不实现'), (1, '待确认'),
-                                                                                (2, '待调研'), (3, '排期中'),
-                                                                                (4, '设计中'), (5, '研发排期中'),
-                                                                                (6, '研发实现中'), (9, '搁置'),
-                                                                                (10, '已完成'), (11, '部分完成')],
-                         coerce=int)
-    assignee = SelectField('需求当前负责人', validators=[DataRequired('负责人必须指定。')], coerce=int)
-    submit = SubmitField('更新')
+
 
 
 # 版本发布
@@ -111,7 +100,7 @@ class AdminAdminEditForm(Form):
     submit = SubmitField('保存')
 
 
-# 前言部分
+# 前台部分
 
 # 用户登录
 class FrontLoginForm(Form):
@@ -155,6 +144,21 @@ class AdminConfigForm(Form):
     subtitle = StringField('网站副标题', validators=[DataRequired('网站副标题必填！')])
     submit = SubmitField('更新')
 
+
+# 更新需求
+class AdminDemandForm(Form):
+    title = StringField('需求概述', validators=[DataRequired('需求概述必填。')])
+    p_done_time = StringField('预计设计完成时间')
+    t_done_time = StringField('预计发版上线时间')
+    feedback = TextAreaField('反馈内容')
+    status = SelectField('处理进度', validators=[DataRequired('处理进度必选。')], choices=[(0, '请选择'), (100, '不实现'), (1, '待确认'),
+                                                                                (2, '待调研'), (3, '排期中'),
+                                                                                (4, '设计中'), (5, '研发排期中'),
+                                                                                (6, '研发实现中'), (9, '搁置'),
+                                                                                (10, '已完成'), (11, '部分完成')],
+                         coerce=int)
+    assignee = SelectField('需求当前负责人', validators=[DataRequired('负责人必须指定。')], coerce=int)
+    submit = SubmitField('更新')
 
 
 

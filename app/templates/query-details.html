@@ -35,6 +35,12 @@
                 {{ details|safe }}
             </div>
             <p><b>处理反馈：</b></p>
+            {% if p_done_time %}
+            <p>预计设计完成时间: {{ p_done_time }}</p>
+            {% endif %}
+            {% if t_done_time %}
+            <p>预计发版上线时间: {{ t_done_time }}</p>
+            {% endif %}
             <div class="details">
                 {{ feedback|safe }}
             </div>
