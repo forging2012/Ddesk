@@ -155,7 +155,7 @@ class AdminDemandForm(Form):
                                                                                 (2, '待调研'), (3, '排期中'),
                                                                                 (4, '设计中'), (5, '研发排期中'),
                                                                                 (6, '研发实现中'), (9, '搁置'),
-                                                                                (10, '已完成'), (11, '部分完成')],
+                                                                                (10, '已完成'), (8, '部分完成')],
                          coerce=int)
     assignee = SelectField('需求当前负责人', validators=[DataRequired('负责人必须指定。')], coerce=int)
     submit = SubmitField('更新')
