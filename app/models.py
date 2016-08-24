@@ -204,9 +204,9 @@ class Page(db.Model):
         return "<Page '{:s}>".format(self.title)
 
 
+
+# 重写表
 class Config(db.Model):
-    __tablename__ = 'config'
+    __tablename__ = 'configs'
     key = db.Column(db.String(64), primary_key=True)  # 配置名
     value = db.Column(db.Text)  # 配置值
-
-
