@@ -69,6 +69,7 @@ def edit_demand():
                               title=this_demand.title)
             db.session.add(new_issue)
             db.session.commit()
+            this_issue = new_issue
 
     if type.id == 47:
         supports = eval(this_demand.support_id)

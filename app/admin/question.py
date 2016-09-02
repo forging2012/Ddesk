@@ -56,7 +56,13 @@ def question():
 def edit_question():
     from ..models import db, Question, Admin, Issue
     this_question = Question.query.get_or_404(request.args.get('question_id'))
-    this_issue = Issue.query.get_or_404(this_question.issues_id)
+    try:
+        this_issue = Issue.query.get_or_404(this_question.issues_id)
+    except Exception as e:
+        new_issue = Issue(details=this_question.details, creator_id=current_user.id, extend=str({'category': this_question.category_id}))
+        db.session.add(new_issue)
+        db.session.commit()
+        this_issue = new_issue
     form = AdminQuestionForm(feedback=this_question.feedback, status=this_question.status, title=this_question.title)
     all_admin = Admin.query.all()
     form.assignee.choices = [(admin.id, admin.name) for admin in all_admin]
