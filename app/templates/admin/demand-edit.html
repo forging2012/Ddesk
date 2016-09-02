@@ -98,7 +98,7 @@
                         </div>
                         <div class="form-group">
                             {{ form.title.label }}
-                            {{ form.title(class="form-control", placeholder="总结需求概述") }}
+                            {{ form.title(class="form-control", placeholder="总结需求概述作为备注") }}
                         </div>
                         <div class="form-group">
                             {{ form.p_done_time.label }}
@@ -144,21 +144,7 @@
     <!-- datetimepicker JavaScript -->
     <script src="../../static/admin/node_modules/startbootstrap-sb-admin-2/bower_components/datetimepicker/jquery.datetimepicker.js"></script>
 
-    <!-- Simditor -->
-    <script type="text/javascript" src="../../static/admin/node_modules/simple-module/lib/module.js"></script>
-    <script type="text/javascript" src="../../static/admin/node_modules/simple-hotkeys/lib/hotkeys.js"></script>
-    <script type="text/javascript" src="../../static/admin/node_modules/simple-uploader/lib/uploader.js"></script>
-    <script type="text/javascript" src="../../static/admin/node_modules/simditor/lib/simditor.js"></script>
     <script>
-        var goods_detail = new Simditor({
-            textarea: $('#feedback'),
-            toolbar: ['bold','strikethrough','fontScale' ,'color','ol','blockquote','table','image','hr'],
-            upload:{
-                url:'{{ url_for('.api_upyun') }}',
-                fileKey:'detail_img'
-            },
-            imageButton:['upload']
-        });
         $('#p_done_time, #t_done_time').datetimepicker({
               lang:"ch",           //语言选择中文
               yearStart: 2016,     //设置最小年份

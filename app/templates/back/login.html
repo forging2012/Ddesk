@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!--Import Icon Font-->
+    <link href="../static/node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!--Import Bulma.css-->
+    <link type="text/css" rel="stylesheet" href="../static/node_modules/bulma/css/bulma.css" media="screen,projection" />
+    <!--Import common.css-->
+    <link href="../static/styles/common.min.css" rel="stylesheet">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>IP Control</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="login-header has-text-centered">
+            <h5 class="title is-5">IP Control</h5>
+            <h6 class="subtitle is-6">control.intpi.com</h6>
+
+        </div>
+
+        <section class="section login-main">
+            <form class="login-form" action="" method="post">
+                {% include 'front/_flashMsg.html' %}
+                {% include 'front/_formMsg.html' %}
+                {{ form.hidden_tag() }}
+                {{ form.username.label(class="label") }}
+                <p class="control">
+                    {{ form.username(class="input", placeholder="用户名") }}
+                </p>
+                {{ form.password.label(class="label") }}
+                <p class="control">
+                    {{ form.password(class="input", placeholder="密码") }}
+                </p>
+                {{ form.token.label(class="label") }}
+                <p class="control">
+                    {{ form.token(class="input", placeholder="密令") }}
+                </p>
+                <div class="submit">
+                    <button class="button is-dark" type="submit">登录</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    {% include '_footer.html' %}
+
+    <!--Import jQuery-->
+    <script type="text/javascript" src="../static/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../static/scripts/common.min.js" charset="utf-8"></script>
+
+</body>
+
+</html>

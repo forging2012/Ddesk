@@ -43,7 +43,7 @@
                         <div class="row"></div>
                             <tbody>
                             {% if current_user.is_authenticated %}
-                                <p>当前登录账号：{{ current_user.username }}</p>
+                                <p>当前登录账号：{{ current_user.name }}</p>
                                 {% for item in all_user_question if item.status == 1 %}
                                 <tr>
                                     <td><a href="{{ url_for('.query_details', cid=1, pid=item.id) }}" target="_blank">问题等待产品经理查看确认，点击查看详情</a></td>
@@ -72,7 +72,7 @@
                         <div class="row"></div>
                             <tbody>
                             {% if current_user.is_authenticated %}
-                                <p>当前登录账号：{{ current_user.username }}</p>
+                                <p>当前登录账号：{{ current_user.name }}</p>
                                 {% for item in all_user_question if item.status == 2 %}
                                 <tr>
                                     <td><a href="{{ url_for('.query_details', cid=1, pid=item.id) }}" target="_blank">{{ item.title|string|truncate(30, end='...') }}</a></td>
@@ -101,8 +101,8 @@
                         <div class="row"></div>
                             <tbody>
                             {% if current_user.is_authenticated %}
-                                <p>当前登录账号：{{ current_user.username }}</p>
-                                {% for item in all_user_question if item.status == 2 %}
+                                <p>当前登录账号：{{ current_user.name }}</p>
+                                {% for item in all_user_question if item.status == 3 %}
                                 <tr>
                                     <td><a href="{{ url_for('.query_details', cid=1, pid=item.id) }}" target="_blank">{{ item.title|string|truncate(30, end='...') }}</a></td>
                                     <td class="deep-orange-text">问题</td>

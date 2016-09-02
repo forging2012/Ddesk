@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from . import admin
 from flask import render_template, request, redirect, url_for, flash
-from flask_login import login_required
+from flask_login import login_required, current_user
 from ..forms import AdminDemandForm
 from app import config
 from datetime import datetime
-from ..models import db, Demand, Admin, Tag
+from ..models import db, Demand, Admin, Tag, Issue
 from ..sdk import alidayu
 
 
@@ -55,6 +55,7 @@ def demand():
 def edit_demand():
     this_demand = Demand.query.get(request.args.get('demand_id'))
     type = Tag.query.get(this_demand.type_id)
+    this_issue = Issue.query.get_or_404(this_demand.issues_id)
     if type.id == 47:
         supports = eval(this_demand.support_id)
         support1 = ''
@@ -77,11 +78,11 @@ def edit_demand():
             form.assignee.choices.remove((this_demand.assignee.id, this_demand.assignee.name))
             form.assignee.choices.insert(0, (this_demand.assignee.id, this_demand.assignee.name))
         if form.validate_on_submit():
-            phone_number = this_demand.create_customer.tel
-            name = this_demand.create_customer.username
+            phone_number = this_demand.creator.tel
+            name = this_demand.creator.name
             if this_demand.status != form.status.data:
                 sms_demand(phone_number=phone_number, name=name, sub=form.title.data,
-                           state=config.DEMAND_STATUS[form.status.data])
+                       state=config.DEMAND_STATUS[form.status.data])
             if this_demand.assignee_id != form.assignee.data:
                 this_admin = Admin.query.get(int(form.assignee.data))
                 sms_demand_a(phone_number=this_admin.tel, name1=this_admin.name, name2=name)
@@ -96,6 +97,24 @@ def edit_demand():
             this_demand.assignee_id = form.assignee.data
             this_demand.modify_time = datetime.now()
             db.session.add(this_demand)
+
+            issue_status = 10
+            if form.status.data < 7:
+                issue_status = 20
+            elif form.status.data >= 8:
+                issue_status = 30
+
+            log = eval(this_issue.log)
+            log.append({'date': str(datetime.now()), 'admin': current_user.name, 'data': form.feedback.data})
+
+            this_issue.title = form.title.data
+            this_issue.feedback = form.feedback.data
+            this_issue.assignee_id = form.assignee.data
+            this_issue.status = issue_status
+            this_issue.log = str(log)
+            this_issue.modify_time = datetime.now()
+            db.session.add(this_issue)
+
             db.session.commit()
             flash('需求信息已更新。', 'alert-success')
             return redirect(url_for('.demand'))
@@ -136,6 +155,24 @@ def edit_demand():
             this_demand.assignee_id = form.assignee.data
             this_demand.modify_time = datetime.now()
             db.session.add(this_demand)
+
+            issue_status = 10
+            if form.status.data < 7:
+                issue_status = 20
+            elif form.status.data >= 8:
+                issue_status = 30
+
+            log = eval(this_issue.log)
+            log.append({'date': str(datetime.now()), 'admin': current_user.name, 'data': form.feedback.data})
+
+            this_issue.title = form.title.data
+            this_issue.feedback = form.feedback.data
+            this_issue.assignee_id = form.assignee.data
+            this_issue.status = issue_status
+            this_issue.log = str(log)
+            this_issue.modify_time = datetime.now()
+            db.session.add(this_issue)
+
             db.session.commit()
             flash('需求信息已更新。', 'alert-success')
             return redirect(url_for('.demand'))

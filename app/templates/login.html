@@ -8,7 +8,7 @@
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="../static/node_modules/bulma/css/bulma.css" media="screen,projection" />
     <!--Import common.css-->
-    <link href="../static/styles/commonv2.min.css" rel="stylesheet">
+    <link href="../static/styles/front/common.min.css" rel="stylesheet">
     <!--Import favicon-->
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
@@ -28,12 +28,12 @@
         </div>
 
         <form class="login-form" action="" method="post">
-            {% include '_flashMsg.html' %}
-            {% include '_formMsg.html' %}
+            {% include 'front/_flashMsg.html' %}
+            {% include 'front/_formMsg.html' %}
             {{ form.hidden_tag() }}
             <label class="label">姓名</label>
             <p class="control">
-                {{ form.username(class="input", placeholder="你的姓名") }}
+                {{ form.name(class="input", placeholder="你的姓名") }}
             </p>
             <label class="label">手机号</label>
             <p class="control">
@@ -48,7 +48,7 @@
 
     <!--Import jQuery-->
     <script type="text/javascript" src="../static/node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="../static/scripts/common.min.js" charset="utf-8"></script>
+    <script src="../static/scripts/front/common.min.js" charset="utf-8"></script>
 </body>
 
 </html>

@@ -1,0 +1,47 @@
+<header>
+    <nav class="nav">
+        <div class="nav-left"></div>
+        <div class="nav-center">
+            <a class="nav-item" href="{{ url_for('admin.index') }}">
+                <h5 class="title is-5">Ddesk Back</h5>
+                <p class="help">v1.0.0b4</p>
+            </a>
+        </div>
+        <div class="nav-right"></div>
+    </nav>
+</header>
+
+<aside class="aside section">
+    <p class="menu-label">
+        操作菜单
+    </p>
+    <ul class="metismenu menu-list">
+        <li>
+            <a href="{{ url_for('admin.index') }}">
+                <span class="icon is-small"><i class="fa fa-tachometer"></i></span>
+                <span>概览</span>
+            </a>
+        </li>
+        <li aria-haspopup="true">
+            <a>
+                <span class="icon is-small"> <i class="fa fa-users" aria-hidden="true"></i></span>
+                <span>用户</span>
+                <span class="icon is-small is-angle"><i class="fa fa-angle-down"></i></span>
+            </a>
+            <ul>
+                <li><a href="{{ url_for('.user') }}">用户管理</a></li>
+                <li><a href="{{ url_for('.sync_user') }}">数据同步</a></li>
+            </ul>
+        </li>
+        <li aria-haspopup="true">
+            <a>
+                <span class="icon is-small"> <i class="fa fa-cogs" aria-hidden="true"></i></span>
+                <span>系统设置</span>
+                <span class="icon is-small is-angle"><i class="fa fa-angle-down"></i> </span>
+            </a>
+            <ul>
+                <li><a href="{{ url_for('.config') }}">网站设置</a></li>
+            </ul>
+        </li>
+    </ul>
+</aside>

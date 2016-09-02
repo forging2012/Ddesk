@@ -4,7 +4,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
-from app.sdk import dingtalk
+from app.sdk import dingtalk as dingtalk1
+from app.modules import dingtalk
 import upyun
 
 app = Flask(__name__)
@@ -22,7 +23,8 @@ login_manager.login_message_category = 'alert-danger is-danger'
 
 
 # 钉钉
-ding_msg = dingtalk.DingTalkMsg(config.DINGTALK_API_CID, config.DINGTALK_API_SECRET, config.DINGTALK_API_MSGID)
+ding_msg = dingtalk1.DingTalkMsg(config.DINGTALK_API_CID, config.DINGTALK_API_SECRET, config.DINGTALK_API_MSGID)
+ding = dingtalk.DingTalk(config.DINGTALK_API_CID, config.DINGTALK_API_SECRET, config.DINGTALK_API_MSGID)
 # 又拍云
 up = upyun.UpYun(config.UPYUN_BUCKET, username=config.UPYUN_USERNAME, password=config.UPYUN_PASSWORD)
 
@@ -30,11 +32,14 @@ up = upyun.UpYun(config.UPYUN_BUCKET, username=config.UPYUN_USERNAME, password=c
 # login回调函数
 @login_manager.user_loader
 def load_user(user_id):
-    from .models import Customer, Admin
-    return Customer.query.get(int(user_id)) or Admin.query.get(int(user_id))
+    from .models import User, Admin
+    return User.query.get(int(user_id)) or Admin.query.get(int(user_id))
 
 
 from .front import front
 from .admin import admin
+from .back import back
 app.register_blueprint(front)
 app.register_blueprint(admin, url_prefix='/admin')
+app.register_blueprint(back, url_prefix='/back')
+

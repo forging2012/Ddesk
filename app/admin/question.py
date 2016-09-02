@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from . import admin
 from flask import render_template, request, redirect, url_for, flash
-from flask_login import login_required
+from flask_login import login_required, current_user
 from ..forms import AdminQuestionForm
 from app import config
 import json
@@ -54,8 +54,9 @@ def question():
 @admin.route('/question/edit', methods=['GET', 'POST'])
 @login_required
 def edit_question():
-    from ..models import db, Question, Admin
+    from ..models import db, Question, Admin, Issue
     this_question = Question.query.get_or_404(request.args.get('question_id'))
+    this_issue = Issue.query.get_or_404(this_question.issues_id)
     form = AdminQuestionForm(feedback=this_question.feedback, status=this_question.status, title=this_question.title)
     all_admin = Admin.query.all()
     form.assignee.choices = [(admin.id, admin.name) for admin in all_admin]
@@ -65,8 +66,8 @@ def edit_question():
         form.assignee.choices.remove((this_question.assignee.id, this_question.assignee.name))
         form.assignee.choices.insert(0, (this_question.assignee.id, this_question.assignee.name))
     if form.validate_on_submit():
-        phone_number = this_question.create_customer.tel
-        name = this_question.create_customer.username
+        phone_number = this_question.creator.tel
+        name = this_question.creator.name
         if this_question.status != form.status.data:
             sms_question(phone_number=phone_number, name=name, sub=form.title.data,
                          state=config.QUESTION_STATUS[form.status.data])
@@ -79,6 +80,24 @@ def edit_question():
         this_question.assignee_id = form.assignee.data
         this_question.modify_time = datetime.now()
         db.session.add(this_question)
+
+        issue_status = 10
+        if form.status.data == 2:
+            issue_status = 20
+        elif form.status.data == 3:
+            issue_status = 30
+
+        log = eval(this_issue.log)
+        log.append({'date': str(datetime.now()), 'admin': current_user.name, 'data': form.feedback.data})
+
+        this_issue.title = form.title.data
+        this_issue.feedback = form.feedback.data
+        this_issue.assignee_id = form.assignee.data
+        this_issue.status = issue_status
+        this_issue.log = str(log)
+        this_issue.modify_time = datetime.now()
+        db.session.add(this_issue)
+
         db.session.commit()
         flash('问题信息已更新。', 'alert-success')
         return redirect(url_for('.question'))

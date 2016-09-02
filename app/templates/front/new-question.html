@@ -4,13 +4,13 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <!--Import Icon Font-->
-    <link href="../static/node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../static/node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="../static/node_modules/bulma/css/bulma.css" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="../../static/node_modules/bulma/css/bulma.css" media="screen,projection" />
     <!--Import common.css-->
-    <link href="../static/styles/commonv2.min.css" rel="stylesheet">
+    <link href="../../static/styles/front/common.min.css" rel="stylesheet">
     <!-- Simditor -->
-    <link href="../static/node_modules/simditor/styles/simditor.css" rel="stylesheet" type="text/css">
+    <link href="../../static/node_modules/simditor/styles/simditor.css" rel="stylesheet" type="text/css">
     <!--Import favicon-->
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
@@ -22,17 +22,21 @@
 </head>
 
 <body>
-    {% include '_header.html' %}
+    {% include 'front/_header.html' %}
 
     <section class="section">
         <form class="que-form" action="" method="post">
-            {% include '_flashMsg.html' %}
-            {% include '_formMsg.html' %}
+            {% include 'front/_flashMsg.html' %}
+            {% include 'front/_formMsg.html' %}
             {{ form.hidden_tag() }}
-            <div class="notification">
-                <button class="delete" type="button"></button>
-                您有任何针对网站产品的问题或建议，以及发现网站错误（Bug）或不正常之处，您可以随时通过这里反馈给技术产品部。
-            </div>
+            <article class="message">
+              <div class="message-header">
+                说明
+              </div>
+              <div class="message-body">
+                您有任何针对网站产品的问题或建议，以及发现网站错误（Bug）或不正常之处，您可以随时通过这里反馈给技术产品部。.
+              </div>
+            </article>
             {{ form.category.label(class="label") }}
             <p class="control">
                 <span class="select">
@@ -44,7 +48,7 @@
                 {{ form.details(id="details", class="textarea", placeholder="请填写详细说明，可以上传图片。") }}
             </p>
             <div class="content">
-                <blockquote>您的联系信息：{{ current_user.username }}， {{ current_user.tel }} <a href="{{ url_for('.logout') }}">退出</a>
+                <blockquote>您的联系信息：{{ current_user.name }}， {{ current_user.tel }} <a href="{{ url_for('.logout') }}">退出</a>
                     <p class="help">若联系信息有误请告知技术产品部任意产品经理修改</p>
                 </blockquote>
             </div>
@@ -57,14 +61,14 @@
     {% include '_footer.html' %}
 
     <!--Import jQuery-->
-    <script type="text/javascript" src="../static/node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="../static/scripts/common.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../static/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../../static/scripts/front/common.min.js" charset="utf-8"></script>
 
     <!-- Simditor -->
-    <script type="text/javascript" src="../static/node_modules/simple-module/lib/module.js"></script>
-    <script type="text/javascript" src="../static/node_modules/simple-hotkeys/lib/hotkeys.js"></script>
-    <script type="text/javascript" src="../static/node_modules/simple-uploader/lib/uploader.js"></script>
-    <script type="text/javascript" src="../static/node_modules/simditor/lib/simditor.js"></script>
+    <script type="text/javascript" src="../../static/node_modules/simple-module/lib/module.js"></script>
+    <script type="text/javascript" src="../../static/node_modules/simple-hotkeys/lib/hotkeys.js"></script>
+    <script type="text/javascript" src="../../static/node_modules/simple-uploader/lib/uploader.js"></script>
+    <script type="text/javascript" src="../../static/node_modules/simditor/lib/simditor.js"></script>
     <script>
         var new_textarea = new Simditor({
             textarea: $('#details'),

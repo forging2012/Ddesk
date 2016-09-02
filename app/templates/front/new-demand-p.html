@@ -4,13 +4,13 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <!--Import Icon Font-->
-    <link href="../static/node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../static/node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="../static/node_modules/bulma/css/bulma.css" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="../../static/node_modules/bulma/css/bulma.css" media="screen,projection" />
     <!--Import common.css-->
-    <link href="../static/styles/commonv2.min.css" rel="stylesheet">
+    <link href="../../static/styles/front/common.min.css" rel="stylesheet">
     <!-- Simditor -->
-    <link href="../static/node_modules/simditor/styles/simditor.css" rel="stylesheet" type="text/css">
+    <link href="../../static/node_modules/simditor/styles/simditor.css" rel="stylesheet" type="text/css">
     <!--Import favicon-->
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
@@ -22,7 +22,7 @@
 </head>
 
 <body>
-    {% include '_header.html' %}
+    {% include 'front/_header.html' %}
 
     <section class="section">
         <div class="de-nav">
@@ -44,14 +44,18 @@
             </div>
         </div>
         <form class="de-form" action="" method="post">
-            {% include '_flashMsg.html' %}
-            {% include '_formMsg.html' %}
+            {% include 'front/_flashMsg.html' %}
+            {% include 'front/_formMsg.html' %}
             {{ form.hidden_tag() }}
-            <div class="notification">
-                <button class="delete" type="button"></button>
-                <p>在您与产品经理初步沟通后，在这里提出您针对网站产品或业务的具体需求。</p>
-                <p>因运营需要所需的设计类需求，不属于产品需求，无需与产品经理沟通，请您直接进入「设计需求」栏目向设计师提出。</p>
-            </div>
+            <article class="message is-warning">
+              <div class="message-header">
+                说明
+              </div>
+              <div class="message-body">
+                  <p> 提需求前请与对应产品经理事先沟通,未沟通请勿在这里提出。</p>
+                  <p>因运营需要所需的设计类需求，不属于产品需求，无需与产品经理沟通，请您直接进入「设计需求」栏目向设计师提出。</p>
+              </div>
+            </article>
             {{ form.type.label(class="label") }}
             <p class="control">
                 <span class="select">
@@ -82,7 +86,7 @@
             </p>
             <p class="content">产品经理可能会要求您提供《需求申请表》等附件，<a href="">请您点击这里下载</a>，填写完毕后直接发给之前与您沟通的产品经理。</p>
             <div class="content">
-                <blockquote>您的联系信息：{{ current_user.username }}， {{ current_user.tel }} <a href="{{ url_for('.logout') }}">退出</a>
+                <blockquote>您的联系信息：{{ current_user.name }}， {{ current_user.tel }} <a href="{{ url_for('.logout') }}">退出</a>
                     <p class="help">若联系信息有误请告知技术产品部任意产品经理修改</p>
                 </blockquote>
             </div>
@@ -96,14 +100,14 @@
     {% include '_footer.html' %}
 
     <!--Import jQuery-->
-    <script type="text/javascript" src="../static/node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="../static/scripts/common.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../static/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../../static/scripts/front/common.min.js" charset="utf-8"></script>
 
     <!-- Simditor -->
-    <script type="text/javascript" src="../static/node_modules/simple-module/lib/module.js"></script>
-    <script type="text/javascript" src="../static/node_modules/simple-hotkeys/lib/hotkeys.js"></script>
-    <script type="text/javascript" src="../static/node_modules/simple-uploader/lib/uploader.js"></script>
-    <script type="text/javascript" src="../static/node_modules/simditor/lib/simditor.js"></script>
+    <script type="text/javascript" src="../../static/node_modules/simple-module/lib/module.js"></script>
+    <script type="text/javascript" src="../../static/node_modules/simple-hotkeys/lib/hotkeys.js"></script>
+    <script type="text/javascript" src="../../static/node_modules/simple-uploader/lib/uploader.js"></script>
+    <script type="text/javascript" src="../../static/node_modules/simditor/lib/simditor.js"></script>
     <script>
         var new_textarea = new Simditor({
             textarea: $('#details'),

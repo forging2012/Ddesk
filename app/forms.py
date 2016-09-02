@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask_wtf import Form
-from wtforms import StringField, PasswordField, SubmitField, TextAreaField, SelectField, IntegerField, BooleanField, DateTimeField
-from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField, SelectField, IntegerField, BooleanField, DateTimeField, RadioField
+from wtforms.validators import DataRequired, Length, EqualTo, ValidationError, Email
 from wtforms_components import SelectField as SelectField2, SelectMultipleField
 
 
@@ -102,18 +102,9 @@ class AdminAdminEditForm(Form):
 
 # 前台部分
 
-# 用户登录
-class FrontLoginForm(Form):
-    username = StringField('姓名', validators=[DataRequired('请填写姓名。')])
-    tel = StringField('手机号', validators=[DataRequired('请填写手机号。')])
-    submit = SubmitField('登录')
 
 
-# 新增问题
-class FrontQuestionForm(Form):
-    category = SelectField('针对产品或业务', validators=[DataRequired('请选择针对产品或业务。')], coerce=int)
-    details = TextAreaField('详细说明', validators=[DataRequired('请填写详细说明。')])
-    submit = SubmitField('提交')
+
 
 
 # 新增产品需求
@@ -138,11 +129,6 @@ class AddDesDemandForm(Form):
 
 # 后台部分
 
-# 网站基本信息配置
-class AdminConfigForm(Form):
-    title = StringField('网站Title', validators=[DataRequired('网站Title必填！')])
-    subtitle = StringField('网站副标题', validators=[DataRequired('网站副标题必填！')])
-    submit = SubmitField('更新')
 
 
 # 更新需求
@@ -161,7 +147,38 @@ class AdminDemandForm(Form):
     submit = SubmitField('更新')
 
 
+"""
+V1.0
+新版本重新设计表单
+"""
 
 
+# 网站基本信息配置
+class AppConfigForm(Form):
+    title = StringField('网站标题', validators=[DataRequired('网站标题不能为空。')])
+    subtitle = StringField('网站副标题', validators=[DataRequired('网站副标题不能为空。')])
+    submit = SubmitField('保存')
 
 
+# 用户管理
+class UserForm(Form):
+    username = StringField('用户名', validators=[DataRequired('用户名必填。')])
+    name = StringField('姓名', validators=[DataRequired('姓名必填。')])
+    email = StringField('邮箱', validators=[DataRequired('邮箱必填。'), Email('Email格式不正确。')])
+    tel = StringField('电话', validators=[DataRequired('电话必填。')])
+    status = RadioField('状态', validators=[DataRequired('状态必选。')], choices=[(1, '正常'), (2, '锁定')], coerce=int)
+    submit = SubmitField('保存')
+
+
+# 用户登录
+class UserLoginForm(Form):
+    name = StringField('姓名', validators=[DataRequired('请填写姓名。')])
+    tel = StringField('手机号', validators=[DataRequired('请填写手机号。')])
+    submit = SubmitField('登录')
+
+
+# 新增问题
+class QuestionForm(Form):
+    category = SelectField('针对产品或业务', validators=[DataRequired('请选择针对产品或业务。')], coerce=int)
+    details = TextAreaField('详细说明', validators=[DataRequired('请填写详细说明。')])
+    submit = SubmitField('提交')

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!--Import Icon Font-->
+    <link href="../../static/back/node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!--Import Bulma.css-->
+    <link type="text/css" rel="stylesheet" href="../../static/back/node_modules/bulma/css/bulma.css" media="screen,projection" />
+    <link href="../../static/back/node_modules/metismenu/dist/metisMenu.min.css" rel="stylesheet">
+    <!--Import common.css-->
+    <link href="../../static/back/styles/common.min.css" rel="stylesheet">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>Ddesk Control</title>
+</head>
+
+<body>
+    {% include 'back/_header.html' %}
+
+    <div class="main">
+        <div class="is-clearfix">
+            <h3 class="title is-pulled-left">同步用户数据</h3>
+            <a class="button is-small t-b" href="{{ url_for('.user') }}">返回</a>
+        </div>
+        <section class="section">
+            <div class="columns">
+                  <div class="column is-6">
+                 {% include 'front/_flashMsg.html' %}
+                <article class="message is-warning">
+                    <div class="message-header">
+                    重要说明
+                    </div>
+                    <div class="message-body">
+                        <p>本功能将同步外部OA系统的组织架构和员工数据到本系统中。其主要任务如下:</p>
+                        <p>1. 将OA系统中存在,但本系统中不存在的组织架构、员工数据新增到本系统中;</p>
+                        <p>2. 将OA系统中已删除,但本系统中仍存在的组织架构、员工数据进行锁定(软删除);</p>
+                        <p>3. 将OA系统中存在,本系统中虽然也存在,但信息与OA系统不一致的组织架构数据、员工信息更新到与OA系统一致。</p>
+                        <strong>点击「确认开始同步」后请勿关闭本页面,并等待系统告知执行结果。请勿在用户集中使用系统的时间段进行本操作。</strong>
+                    </div>
+                </article>
+                <a href="{{ url_for('.sync_user', do=1) }}"><button class="button is-dark" aria-label="loading">确定开始同步</button></a>
+            </div>
+            </div>
+        </section>
+    </div>
+
+    {% include '_footer.html' %}
+
+    <!--Import jQuery-->
+    <script type="text/javascript" src="../../static/back/node_modules/jquery/dist/jquery.min.js"></script>
+    <!--Import CommonJS-->
+    <script src="../../static/back/scripts/common.min.js" charset="utf-8"></script>
+    <!--Import metisMenuJS-->
+    <script src="../../static/back/node_modules/metismenu/dist/metisMenu.min.js"></script>
+    <script>
+        $(function() {
+            $('.menu-list').metisMenu({
+                toggle: false,
+            });
+        });
+    </script>
+</body>
+
+</html>

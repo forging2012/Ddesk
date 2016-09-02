@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!--Import Icon Font-->
+    <link href="../../static/back/node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!--Import Bulma.css-->
+    <link type="text/css" rel="stylesheet" href="../../static/back/node_modules/bulma/css/bulma.css" media="screen,projection" />
+    <link href="../../static/back/node_modules/metismenu/dist/metisMenu.min.css" rel="stylesheet">
+    <!--Import common.css-->
+    <link href="../../static/back/styles/common.min.css" rel="stylesheet">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>Ddesk Control</title>
+</head>
+
+<body>
+    {% include 'back/_header.html' %}
+
+    <div class="main">
+        {% include 'front/_flashMsg.html' %}
+        <div class="is-clearfix">
+            <h3 class="title is-pulled-left">用户</h3>
+            <a class="button is-dark is-small t-b" href="{{ url_for('.add_user') }}">添加</a>
+        </div>
+        <section class="section">
+            <table class="table is-bordered">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>用户名</th>
+                        <th>姓名</th>
+                        <th>邮箱</th>
+                        <th>电话</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in all_users %}
+                    <tr>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.username }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.email }}</td>
+                        <td>{{ item.tel }}</td>
+                        <td>
+                            {% if item.status %}
+                            <span class="tag is-success">正常</span>
+                            {% else %}
+                            <span class="tag is-danger">冻结</span>
+                            {% endif %}
+                        </td>
+                        <td><a href="{{ url_for('.edit_user', id=item.id) }}">编辑</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    {% include '_footer.html' %}
+
+    <!--Import jQuery-->
+    <script type="text/javascript" src="../../static/back/node_modules/jquery/dist/jquery.min.js"></script>
+    <!--Import CommonJS-->
+    <script src="../../static/back/scripts/common.min.js" charset="utf-8"></script>
+    <!--Import metisMenuJS-->
+    <script src="../../static/back/node_modules/metismenu/dist/metisMenu.min.js"></script>
+    <script>
+        $(function() {
+            $('.menu-list').metisMenu({
+                toggle: false,
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -3,7 +3,7 @@ from . import front
 from flask import render_template, request
 from app import config
 from flask_login import current_user
-from ..models import Question, Demand, Config
+from ..models import Question, Demand, Config, Customer
 
 
 @front.route('/query')
@@ -11,9 +11,10 @@ def query():
     web_title = Config.query.filter_by(key='title').first()
     all_question = Question.query.order_by(Question.create_time.desc()).all()
     all_demand = Demand.query.order_by(Demand.create_time.desc()).all()
+    old_user = Customer.query.filter_by(username=current_user.name).first()
     if current_user.is_authenticated:
-        all_user_question = Question.query.filter_by(own_customer_id=current_user.id).order_by(Question.create_time.desc()).all()
-        all_user_demand = Demand.query.filter_by(own_customer_id=current_user.id).order_by(Demand.create_time.desc()).all()
+        all_user_question = Question.query.filter_by(own_customer_id=old_user.id).order_by(Question.create_time.desc()).all()
+        all_user_demand = Demand.query.filter_by(own_customer_id=old_user.id).order_by(Demand.create_time.desc()).all()
     else:
         all_user_question = None
         all_user_demand = None

@@ -1,0 +1,74 @@
+@charset "utf-8";
+body {
+    font-family: "Helvetica Neue", "PingFangSC-Light", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+    line-height: 1.6666;
+}
+
+/* common */
+
+.header {
+    padding: 10px 0;
+    margin-bottom: 20px;
+    background-color: #fff;
+}
+.aside {
+    position: fixed;
+    top: 100px;
+    left: 0;
+    width: 200px;
+}
+.aside .menu-list li a .is-angle {
+    position: absolute;
+    right: 25px;
+    -webkit-transition: -webkit-transform .377s ease;
+    transition: -webkit-transform .377s ease;
+    transition: transform .377s ease;
+    transition: transform .377s ease, -webkit-transform .377s ease;
+}
+.aside .menu-list li a[aria-expanded="true"] .is-angle {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+.aside .menu-list li ul {
+    margin: 0 10px;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+}
+.main {
+    margin: 42px 30px 100px 220px;
+}
+.title {
+    margin-right: 10px;
+}
+.t-b {
+    vertical-align: text-top;
+}
+
+/* Form */
+
+form .button, .select select, select, .select {
+    width: 100%;
+    height: 40px;
+    display: block;
+}
+form .input {
+    height: 40px;
+}
+form .submit {
+    margin-top: 20px;
+}
+
+/* Login */
+
+.login-header {
+    margin-top: 100px;
+}
+.login-main {
+    max-width: 350px;
+    margin: 20px auto 80px;
+    border-radius: 3px;
+}
+.login-form {
+    max-width: 300px;
+    margin: 0 auto;
+}

@@ -57,7 +57,7 @@ class Admin(UserMixin, db.Model):
         return "<Admin '{:s}>".format(self.username)
 
 
-class Customer(UserMixin, db.Model):
+class Customer(db.Model):
     __tablename__ = 'customer'
     id = db.Column(db.Integer, primary_key=True)
     tel = db.Column(db.String(20), unique=True)  # 电话
@@ -89,7 +89,6 @@ class Customer(UserMixin, db.Model):
 class Question(db.Model):
     __tablename__ = 'question'
     id = db.Column(db.Integer, primary_key=True)
-    id_hash = db.Column(db.String(128), unique=True)
     own_customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))  # 问题所属用户
     assignee_id = db.Column(db.Integer, db.ForeignKey('admin.id'))  # 问题负责人
     title = db.Column(db.String(60))  # 标题
@@ -104,6 +103,9 @@ class Question(db.Model):
     feedback = db.Column(db.Text, default='')  # 反馈详情
     create_time = db.Column(db.DateTime, default=datetime.now)  # 账号创建时间
     modify_time = db.Column(db.DateTime, default=datetime.now)  # 账号修改时间
+
+    creator_id = db.Column(db.Integer, db.ForeignKey('users.id'))  # 问题所属用户
+    issues_id = db.Column(db.Integer) # issues_id
 
     def __repr__(self):
         return "<Question '{0}>".format(self.id)
@@ -141,6 +143,9 @@ class Demand(db.Model):
     modify_time = db.Column(db.DateTime, default=datetime.now)  # 最后修改时间
     p_done_time = db.Column(db.DateTime)  # 产品预计完成时间
     t_done_time = db.Column(db.DateTime)  # 技术预计完成时间
+
+    creator_id = db.Column(db.Integer, db.ForeignKey('users.id'))  # 问题所属用户
+    issues_id = db.Column(db.Integer)  # issues_id
 
     def __repr__(self):
         return "<Question '{:s}>".format(self.id)
@@ -204,9 +209,91 @@ class Page(db.Model):
         return "<Page '{:s}>".format(self.title)
 
 
+"""
+V1.0
+新版本重新定义数据库表结构
+"""
 
-# 重写表
+
+# 配置表
 class Config(db.Model):
+    """
+        configs:记录网站的一些个性化配置信息,采用键值对方式,value以字典方式存储一些配置信息
+    """
     __tablename__ = 'configs'
     key = db.Column(db.String(64), primary_key=True)  # 配置名
     value = db.Column(db.Text)  # 配置值
+
+    def __repr__(self):
+        return "<Config '{0}>".format(self.key)
+
+
+# 组织架构
+class Department(db.Model):
+    __tablename__ = 'departments'
+    id = db.Column(db.Integer, primary_key=True)
+    oa_id = db.Column(db.String(128), unique=True)  # OA系统的ID,默认是钉钉的部门ID
+    name = db.Column(db.String(30))  # 部门名称
+    status = db.Column(db.Boolean, default=True)  # 账号状态:正常 / 冻结
+
+    def __repr__(self):
+        return "<Department '{0}>".format(self.name)
+
+
+# 用户表
+class User(UserMixin, db.Model):
+    """
+        users: 用户表
+    """
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    oa_id = db.Column(db.String(128), unique=True)  # OA系统的ID,默认是钉钉的员工ID
+    username = db.Column(db.String(64), unique=True)  # 用户名
+    password_hash = db.Column(db.String(128))  # 密码
+    name = db.Column(db.String(12))  # 姓名
+    email = db.Column(db.String(64))  # 邮箱
+    tel = db.Column(db.String(20))  # 电话
+    department = db.Column(db.Text)  # 部门
+    create_time = db.Column(db.DateTime, default=datetime.now)  # 账号创建时间
+    modify_time = db.Column(db.DateTime, default=datetime.now)  # 账号修改时间
+    status = db.Column(db.Boolean, default=True)  # 账号状态:正常 / 冻结
+
+    question = db.relationship('Question', backref='creator')  # 名下问题(旧)
+    demand = db.relationship('Demand', backref='creator')  # 名下需求(旧)
+    issue = db.relationship('Issue', backref='creator')  # 名下工单
+
+    @property
+    def password(self):
+        raise AttributeError('不能直接获取明文密码！')
+
+    @password.setter
+    def password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def verify_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+    def __repr__(self):
+        return "<Users '{0}>".format(self.username)
+
+
+# 工单表
+class Issue(db.Model):
+    __tablename__ = 'issues'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(60))  # 标题
+    details = db.Column(db.Text, default='')  # 问题详情
+    feedback = db.Column(db.Text, default='')  # 反馈详情
+    status = db.Column(db.Integer, default=1)  # 问题处理进度
+    extend = db.Column(db.Text, default='')  # 扩展字段,用来存储其他信息
+    log = db.Column(db.Text, default='[]')  # 处理日志
+    create_time = db.Column(db.DateTime, default=datetime.now)  # 工单创建时间
+    modify_time = db.Column(db.DateTime, default=datetime.now)  # 工单最近一次更新时间
+
+    creator_id = db.Column(db.Integer, db.ForeignKey('users.id'))  # 创建人
+    assignee_id = db.Column(db.Integer, db.ForeignKey('admin.id'))  # 当前负责人
+
+    def __repr__(self):
+        return "<Issue '{0}>".format(self.title)
+
+

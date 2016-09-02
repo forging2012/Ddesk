@@ -110,22 +110,7 @@
     <!-- Custom Theme JavaScript -->
     <script src="../../static/admin/node_modules/startbootstrap-sb-admin-2/dist/js/sb-admin-2.js"></script>
 
-    <!-- Simditor -->
-    <script type="text/javascript" src="../../static/admin/node_modules/simple-module/lib/module.js"></script>
-    <script type="text/javascript" src="../../static/admin/node_modules/simple-hotkeys/lib/hotkeys.js"></script>
-    <script type="text/javascript" src="../../static/admin/node_modules/simple-uploader/lib/uploader.js"></script>
-    <script type="text/javascript" src="../../static/admin/node_modules/simditor/lib/simditor.js"></script>
-    <script>
-        var goods_detail = new Simditor({
-            textarea: $('#feedback'),
-            toolbar: ['bold','strikethrough','fontScale','color','ol','blockquote','table','image','hr'],
-            upload:{
-                url:'{{ url_for('.api_upyun') }}',
-                fileKey:'detail_img'
-            },
-            imageButton:['upload']
-        });
-    </script>
+
 
 </body>
 
