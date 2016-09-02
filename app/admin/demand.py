@@ -63,6 +63,9 @@ def edit_demand():
                 {'category': '', 'tag': [47, this_demand.des_type_id, this_demand.support_id]}), title=this_demand.title)
             db.session.add(new_issue)
             db.session.commit()
+            this_demand.issues_id = new_issue.id
+            db.session.add(this_demand)
+            db.session.commit()
         else:
             new_issue = Issue(details=this_demand.details, creator_id=current_user.id,
                               extend=str({'category': this_demand.category_id, 'tag': [this_demand.type_id, this_demand.audience_id, this_demand.source_id]}),
@@ -70,6 +73,9 @@ def edit_demand():
             db.session.add(new_issue)
             db.session.commit()
             this_issue = new_issue
+            this_demand.issues_id = new_issue.id
+            db.session.add(this_demand)
+            db.session.commit()
 
     if type.id == 47:
         supports = eval(this_demand.support_id)

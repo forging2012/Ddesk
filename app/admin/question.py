@@ -63,6 +63,9 @@ def edit_question():
         db.session.add(new_issue)
         db.session.commit()
         this_issue = new_issue
+        this_question.issues_id = new_issue.id
+        db.session.add(this_question)
+        db.session.commit()
     form = AdminQuestionForm(feedback=this_question.feedback, status=this_question.status, title=this_question.title)
     all_admin = Admin.query.all()
     form.assignee.choices = [(admin.id, admin.name) for admin in all_admin]
