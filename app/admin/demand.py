@@ -55,7 +55,21 @@ def demand():
 def edit_demand():
     this_demand = Demand.query.get(request.args.get('demand_id'))
     type = Tag.query.get(this_demand.type_id)
-    this_issue = Issue.query.get_or_404(this_demand.issues_id)
+    try:
+        this_issue = Issue.query.get_or_404(this_demand.issues_id)
+    except Exception as e:
+        if type.id == 47:
+            new_issue = Issue(details=this_demand.details, creator_id=current_user.id, extend=str(
+                {'category': '', 'tag': [47, this_demand.des_type_id, this_demand.support_id]}), title=this_demand.title)
+            db.session.add(new_issue)
+            db.session.commit()
+        else:
+            new_issue = Issue(details=this_demand.details, creator_id=current_user.id,
+                              extend=str({'category': this_demand.category_id, 'tag': [this_demand.type_id, this_demand.audience_id, this_demand.source_id]}),
+                              title=this_demand.title)
+            db.session.add(new_issue)
+            db.session.commit()
+
     if type.id == 47:
         supports = eval(this_demand.support_id)
         support1 = ''
@@ -107,10 +121,14 @@ def edit_demand():
             log = eval(this_issue.log)
             log.append({'date': str(datetime.now()), 'admin': current_user.name, 'data': form.feedback.data})
 
+            extend = eval(this_issue.extend)
+            extend['date_due_design'] = str(form.p_done_time.data)
+
             this_issue.title = form.title.data
             this_issue.feedback = form.feedback.data
             this_issue.assignee_id = form.assignee.data
             this_issue.status = issue_status
+            this_issue.extend = str(extend)
             this_issue.log = str(log)
             this_issue.modify_time = datetime.now()
             db.session.add(this_issue)
@@ -165,10 +183,15 @@ def edit_demand():
             log = eval(this_issue.log)
             log.append({'date': str(datetime.now()), 'admin': current_user.name, 'data': form.feedback.data})
 
+            extend = eval(this_issue.extend)
+            extend['date_due_design'] = str(form.p_done_time.data)
+            extend['date_due_online'] = str(form.t_done_time.data)
+
             this_issue.title = form.title.data
             this_issue.feedback = form.feedback.data
             this_issue.assignee_id = form.assignee.data
             this_issue.status = issue_status
+            this_issue.extend = str(extend)
             this_issue.log = str(log)
             this_issue.modify_time = datetime.now()
             db.session.add(this_issue)
