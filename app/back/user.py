@@ -19,20 +19,6 @@ def user():
     return render_template('back/user.html', all_users=all_users)
 
 
-@back.route('/user/add', methods=['GET', 'POST'])
-@login_required
-def add_user():
-    form = UserForm(status=1)
-    if form.validate_on_submit():
-        new_user = User(username=form.username.data, name=form.name.data, email=form.email.data, tel=form.tel.data,
-                        status=True if form.status.data == 1 else False)
-        db.session.add(new_user)
-        db.session.commit()
-        flash('添加用户成功。', 'is-success')
-        return redirect(url_for('.user'))
-    return render_template('back/addUser.html', form=form)
-
-
 @back.route('/user/edit', methods=['GET', 'POST'])
 @login_required
 def edit_user():
