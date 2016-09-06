@@ -138,7 +138,7 @@ def edit_demand():
             this_issue.extend = str(extend)
             this_issue.log = str(log)
             this_issue.modify_time = datetime.now()
-            db.session.add(this_issue)
+            #db.session.add(this_issue)
 
             db.session.commit()
             flash('需求信息已更新。', 'alert-success')

@@ -72,8 +72,8 @@ def add_demand():
 
             new_issue = Issue(details=form.details.data, creator_id=current_user.id, extend=str(
                 {'category': '', 'tag': [47, form.des_type.data, {40: form.support1.data, 39: form.support2.data, 38: form.support3.data}]}))
-            db.session.add(new_issue)
-            db.session.commit()
+            #db.session.add(new_issue)
+            #db.session.commit()
 
             text = str(old_user.id) + str(datetime.now())
             m = md5()
