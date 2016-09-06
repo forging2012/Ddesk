@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from app.sdk import dingtalk as dingtalk1
-from app.modules import dingtalk
+from app.modules import dingtalk, alidayu
 import upyun
 
 app = Flask(__name__)
@@ -21,10 +21,18 @@ login_manager.login_view = '.login'
 login_manager.login_message = '请先登录再操作。'
 login_manager.login_message_category = 'alert-danger is-danger'
 
+# 接口初始化
+# 钉钉
+ding = dingtalk.DingTalk(config.DINGTALK_API_CID, config.DINGTALK_API_SECRET, config.DINGTALK_API_MSGID)
+# 阿里大鱼短信
+alidayu = alidayu.RestApi(key=config.TAOBAO_API_KEY, secret=config.TAOBAO_API_SECRET, sms_free_sign_name='一融需求系统',
+                          url='https://eco.taobao.com/router/rest')
+
 
 # 钉钉
+# 旧
 ding_msg = dingtalk1.DingTalkMsg(config.DINGTALK_API_CID, config.DINGTALK_API_SECRET, config.DINGTALK_API_MSGID)
-ding = dingtalk.DingTalk(config.DINGTALK_API_CID, config.DINGTALK_API_SECRET, config.DINGTALK_API_MSGID)
+
 # 又拍云
 up = upyun.UpYun(config.UPYUN_BUCKET, username=config.UPYUN_USERNAME, password=config.UPYUN_PASSWORD)
 
@@ -33,7 +41,7 @@ up = upyun.UpYun(config.UPYUN_BUCKET, username=config.UPYUN_USERNAME, password=c
 @login_manager.user_loader
 def load_user(user_id):
     from .models import User, Admin
-    return User.query.get(int(user_id)) or Admin.query.get(int(user_id))
+    return User.query.get(int(user_id))
 
 
 from .front import front

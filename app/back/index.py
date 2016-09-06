@@ -5,7 +5,7 @@ __mtime__ = '16/8/31' '16:13'
 """
 from app import app
 from . import back
-from flask import render_template, redirect, url_for, send_from_directory, request
+from flask import render_template, send_from_directory, request
 from flask_login import login_required
 
 

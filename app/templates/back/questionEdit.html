@@ -23,8 +23,8 @@
 
     <div class="main">
         <div class="is-clearfix">
-            <h3 class="title is-pulled-left">修改用户信息</h3>
-            <a class="button is-small t-b" href="{{ url_for('.user') }}">返回</a>
+            <h3 class="title is-pulled-left">处理工单</h3>
+            <a class="button is-small t-b" href="{{ url_for('.question') }}">返回</a>
         </div>
         <section class="section">
         <div class="columns">
@@ -33,35 +33,54 @@
                 {% include 'front/_formMsg.html' %}
                 {{ form.hidden_tag() }}
 
-                {{ form.username.label(class="label") }}
+                {{ form.assignee.label(class="label") }}
                 <p class="control">
-                    {{ form.username(class="input is-disabled", placeholder="用户名") }}
+                    <span class="select">
+                    {{ form.assignee() }}
+                    </span>
                 </p>
-                {{ form.name.label(class="label") }}
+                {{ form.title.label(class="label") }}
                 <p class="control">
-                    {{ form.name(class="input", placeholder="姓名") }}
+                    {{ form.title(class="input", placeholder="概述用户所反馈的问题") }}
                 </p>
-                {{ form.email.label(class="label") }}
+                {{ form.feedback.label(class="label") }}
                 <p class="control">
-                    {{ form.email(class="input", placeholder="Email") }}
-                </p>
-                {{ form.tel.label(class="label") }}
-                <p class="control">
-                    {{ form.tel(class="input", placeholder="电话") }}
+                    {{ form.feedback(class="textarea", placeholder="您需要给提出人一个反馈，即使问题尚待解决") }}
                 </p>
                 {{ form.status.label(class="label") }}
                 <p class="control">
-                  {% for subfield in form.status %}
-                  <label class="radio">
-                    {{ subfield }}
-                    {{ subfield.label }}
-                  </label>
-                  {% endfor %}
+                    <span class="select">
+                    {{ form.status() }}
+                    </span>
                 </p>
+
                 <div class="submit">
                     <button class="button is-dark" type="submit">保存</button>
                 </div>
             </form>
+
+            <div class="column is-5">
+                <label class="label">流水号</label>
+                <p class="control">
+                    {{ datas.id }}
+                </p>
+                <label class="label">发起时间</label>
+                <p class="control">
+                    {{ datas.create_time }}
+                </p>
+                <label class="label">发起人</label>
+                <p class="control">
+                    {{ datas.creator.name }}({{ datas.creator.tel }})
+                </p>
+                <label class="label">针对产品线</label>
+                <p class="control">
+                    {{ datas.category_name }}
+                </p>
+                <label class="label">详情</label>
+                <p class="control">
+                    {{ datas.details|safe }}
+                </p>
+            </div>
         </div>
         </section>
     </div>

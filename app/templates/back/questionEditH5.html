@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!--Import Icon Font-->
+    <link href="../../static/back/node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!--Import Bulma.css-->
+    <link type="text/css" rel="stylesheet" href="../../static/back/node_modules/bulma/css/bulma.css" media="screen,projection" />
+    <link href="../../static/back/node_modules/metismenu/dist/metisMenu.min.css" rel="stylesheet">
+    <!--Import common.css-->
+    <link href="../../static/back/styles/common.min.css" rel="stylesheet">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>Ddesk Control</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="">
+            <div class="column has-text-centered">
+            <h6 class="title">处理工单</h6>
+        </div>
+        </div>
+
+        <section class="section">
+            {% include 'front/_flashMsg.html' %}
+            {% include 'front/_formMsg.html' %}
+            <div class="columns">
+            <div class="column is-half">
+                <label class="label">流水号</label>
+                <p class="control">
+                    {{ datas.id }}
+                </p>
+                <label class="label">发起时间</label>
+                <p class="control">
+                    {{ datas.create_time }}
+                </p>
+                <label class="label">发起人</label>
+                <p class="control">
+                    {{ datas.creator.name }}({{ datas.creator.tel }})
+                </p>
+                <label class="label">针对产品线</label>
+                <p class="control">
+                    {{ datas.category_name }}
+                </p>
+                <label class="label">详情</label>
+                <p class="control">
+                    {{ datas.details|safe }}
+                </p>
+            </div>
+            <form class="column is-half" action="" method="post">
+                {{ form.hidden_tag() }}
+
+                {{ form.assignee.label(class="label") }}
+                <p class="control">
+                    <span class="select">
+                    {{ form.assignee() }}
+                    </span>
+                </p>
+                {{ form.title.label(class="label") }}
+                <p class="control">
+                    {{ form.title(class="input", placeholder="概述用户所反馈的问题") }}
+                </p>
+                {{ form.feedback.label(class="label") }}
+                <p class="control">
+                    {{ form.feedback(class="textarea", placeholder="您需要给提出人一个反馈，即使问题尚待解决") }}
+                </p>
+                {{ form.status.label(class="label") }}
+                <p class="control">
+                    <span class="select">
+                    {{ form.status() }}
+                    </span>
+                </p>
+
+                <div class="submit">
+                    <button class="button is-dark" type="submit">保存</button>
+                </div>
+            </form>
+        </div>
+        </section>
+    </div>
+
+    {% include '_footer.html' %}
+
+    <!--Import jQuery-->
+    <script type="text/javascript" src="../../static/back/node_modules/jquery/dist/jquery.min.js"></script>
+    <!--Import CommonJS-->
+    <script src="../../static/back/scripts/common.min.js" charset="utf-8"></script>
+    <!--Import metisMenuJS-->
+    <script src="../../static/back/node_modules/metismenu/dist/metisMenu.min.js"></script>
+    <script>
+        $(function() {
+            $('.menu-list').metisMenu({
+                toggle: false,
+            });
+        });
+    </script>
+</body>
+
+</html>

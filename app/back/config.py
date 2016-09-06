@@ -30,4 +30,4 @@ def config():
         db.session.commit()
         flash('网站设置已更新。', 'is-success')
         return redirect(url_for('.config'))
-    return render_template('back/editConfig.html', form=form)
+    return render_template('back/configEdit.html', form=form)

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!--Import Icon Font-->
+    <link href="../../static/back/node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!--Import Bulma.css-->
+    <link type="text/css" rel="stylesheet" href="../../static/back/node_modules/bulma/css/bulma.css" media="screen,projection" />
+    <link href="../../static/back/node_modules/metismenu/dist/metisMenu.min.css" rel="stylesheet">
+    <!--Import common.css-->
+    <link href="../../static/back/styles/common.min.css" rel="stylesheet">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>Ddesk Control</title>
+</head>
+
+<body>
+    {% include 'back/_header.html' %}
+
+    <div class="main">
+        <div class="is-clearfix">
+            <h3 class="title is-pulled-left">修改用户信息</h3>
+            <a class="button is-small t-b" href="{{ url_for('.user') }}">返回</a>
+        </div>
+        <section class="section">
+        <div class="columns">
+            <form class="column is-5" action="" method="post">
+                {% include 'front/_flashMsg.html' %}
+                {% include 'front/_formMsg.html' %}
+                {{ form.hidden_tag() }}
+
+                {{ form.username.label(class="label") }}
+                <p class="control">
+                    {{ form.username(class="input is-disabled", placeholder="用户名") }}
+                </p>
+                {{ form.name.label(class="label") }}
+                <p class="control">
+                    {{ form.name(class="input", placeholder="姓名") }}
+                </p>
+                {{ form.email.label(class="label") }}
+                <p class="control">
+                    {{ form.email(class="input", placeholder="Email") }}
+                </p>
+                {{ form.tel.label(class="label") }}
+                <p class="control">
+                    {{ form.tel(class="input", placeholder="电话") }}
+                </p>
+                {{ form.status.label(class="label") }}
+                <p class="control">
+                  {% for subfield in form.status %}
+                  <label class="radio">
+                    {{ subfield }}
+                    {{ subfield.label }}
+                  </label>
+                  {% endfor %}
+                </p>
+                <label class="label">管理员权限</label>
+                <p class="control">
+                  <label class="checkbox">
+                    {{ form.admin }}
+                    {{ form.admin.label }}
+                  </label>
+                </p>
+                <div class="submit">
+                    <button class="button is-dark" type="submit">保存</button>
+                </div>
+            </form>
+        </div>
+        </section>
+    </div>
+
+    {% include '_footer.html' %}
+
+    <!--Import jQuery-->
+    <script type="text/javascript" src="../../static/back/node_modules/jquery/dist/jquery.min.js"></script>
+    <!--Import CommonJS-->
+    <script src="../../static/back/scripts/common.min.js" charset="utf-8"></script>
+    <!--Import metisMenuJS-->
+    <script src="../../static/back/node_modules/metismenu/dist/metisMenu.min.js"></script>
+    <script>
+        $(function() {
+            $('.menu-list').metisMenu({
+                toggle: false,
+            });
+        });
+    </script>
+</body>
+
+</html>

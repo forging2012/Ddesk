@@ -1,5 +1,5 @@
 <header>
-    <nav class="nav">
+    <nav class="nav has-shadow">
         <div class="nav-left"></div>
         <div class="nav-center">
             <a class="nav-item" href="{{ url_for('admin.index') }}">
@@ -13,7 +13,7 @@
 
 <aside class="aside section">
     <p class="menu-label">
-        操作菜单
+        当前用户: {{ current_user.name }}({{ current_user.id }}) <a href="{{ url_for('admin.logout') }}">退出</a>
     </p>
     <ul class="metismenu menu-list">
         <li>
@@ -21,6 +21,17 @@
                 <span class="icon is-small"><i class="fa fa-tachometer"></i></span>
                 <span>概览</span>
             </a>
+        </li>
+        <li aria-haspopup="true">
+            <a>
+                <span class="icon is-small"> <i class="fa fa fa-comments-o" aria-hidden="true"></i></span>
+                <span>工单</span>
+                <span class="icon is-small is-angle"><i class="fa fa-angle-down"></i></span>
+            </a>
+            <ul>
+                <li><a href="{{ url_for('.question') }}">问题与建议</a></li>
+                 <li><a href="">设计需求</a></li>
+            </ul>
         </li>
         <li aria-haspopup="true">
             <a>

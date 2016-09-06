@@ -24,17 +24,19 @@ def user():
 def edit_user():
     this_user = User.query.get_or_404(request.args.get('id'))
     form = UserForm(username=this_user.username, name=this_user.name, email=this_user.email, tel=this_user.tel,
-                    status=1 if this_user.status else 2)
+                    status=1 if this_user.status else 2, admin=this_user.admin)
     if form.validate_on_submit():
         this_user.email = form.email.data
         this_user.name = form.name.data
         this_user.tel = form.tel.data
         this_user.status = True if form.status.data == 1 else False
+        this_user.admin = form.admin.data
+        this_user.modify_time = datetime.now()
         db.session.add(this_user)
         db.session.commit()
         flash('用户信息已更新。', 'is-success')
         return redirect(url_for('.user'))
-    return render_template('back/editUser.html', form=form)
+    return render_template('back/userEdit.html', form=form)
 
 
 @back.route('/user/sync')
@@ -93,4 +95,4 @@ def sync_user():
             db.session.commit()
         flash('数据同步完成。', 'is-success')
         return redirect(url_for('.sync_user'))
-    return render_template('back/syncUser.html')
+    return render_template('back/userSync.html')

@@ -238,7 +238,7 @@
                     <a href="{{ url_for('.dashboard') }}"><i class="fa fa-dashboard fa-fw"></i> 概览</a>
                 </li>
                 <li>
-                    <a href="{{ url_for('.question') }}"><i class="fa fa-question-circle fa-fw"></i> 问题</a>
+                    <a href="{{ url_for('back.question') }}"><i class="fa fa-question-circle fa-fw"></i> 问题</a>
                 </li>
                 <li>
                     <a href="{{ url_for('.demand') }}"><i class="fa fa-envelope fa-fw"></i> 需求</a>
@@ -262,7 +262,7 @@
                             <a href="{{ url_for('.category') }}">分类设置</a>
                         </li>
                         <li>
-                            <a href="{{ url_for('.administrators') }}">管理员设置</a>
+                            <a href="{{ url_for('back.user') }}">管理员设置</a>
                         </li>
                         <li>
                             <a href="{{ url_for('back.config') }}">网站基本设置</a>

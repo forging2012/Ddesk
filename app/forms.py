@@ -12,7 +12,6 @@ class AdminLoginForm(Form):
     key = StringField('密令', validators=[DataRequired('密令忘记填了？')])
     submit = SubmitField('')
 
-
 # 更新问题
 class AdminQuestionForm(Form):
     title = StringField('问题概述', validators=[DataRequired('问题概述必填。')])
@@ -22,6 +21,16 @@ class AdminQuestionForm(Form):
                          coerce=int)
     assignee = SelectField('问题当前负责人', validators=[DataRequired('负责人必须指定。')], coerce=int)
     submit = SubmitField('更新')
+
+class AdminCustomerForm(Form):
+    username = StringField('姓名', validators=[DataRequired('姓名必填哟！')])
+    tel = StringField('手机号', validators=[DataRequired('手机号需要填写一个。')])
+    submit = SubmitField('保存')
+
+    def validate_tel(self, field):
+        from .models import Customer
+        if Customer.query.filter_by(tel=field.data).first():
+            raise ValidationError('手机号已被其他用户使用，请您更换一个。')
 
 
 
@@ -37,17 +46,6 @@ class AdminVersionForm(Form):
     is_new = BooleanField('是最新版本')
     submit = SubmitField('保存')
 
-
-# 用户管理
-class AdminCustomerForm(Form):
-    username = StringField('姓名', validators=[DataRequired('姓名必填哟！')])
-    tel = StringField('手机号', validators=[DataRequired('手机号需要填写一个。')])
-    submit = SubmitField('保存')
-
-    def validate_tel(self, field):
-        from .models import Customer
-        if Customer.query.filter_by(tel=field.data).first():
-            raise ValidationError('手机号已被其他用户使用，请您更换一个。')
 
 
 # 添加分类
@@ -167,6 +165,7 @@ class UserForm(Form):
     email = StringField('邮箱', validators=[DataRequired('邮箱必填。'), Email('Email格式不正确。')])
     tel = StringField('电话', validators=[DataRequired('电话必填。')])
     status = RadioField('状态', validators=[DataRequired('状态必选。')], choices=[(1, '正常'), (2, '锁定')], coerce=int)
+    admin = BooleanField('开通管理员')
     submit = SubmitField('保存')
 
 
@@ -182,3 +181,13 @@ class QuestionForm(Form):
     category = SelectField('针对产品或业务', validators=[DataRequired('请选择针对产品或业务。')], coerce=int)
     details = TextAreaField('详细说明', validators=[DataRequired('请填写详细说明。')])
     submit = SubmitField('提交')
+
+
+# 处理问题类工单
+class QuestionIssueForm(Form):
+    title = StringField('工单备注', validators=[DataRequired('备注必填。')])
+    feedback = TextAreaField('反馈内容', validators=[DataRequired('反馈内容必填。')])
+    status = SelectField('问题状态', validators=[DataRequired('问题状态必选。')], choices=[(0, '请选择'), (10, '待处理'),
+                                                                                (20, '处理中'), (30, '处理完毕')], coerce=int)
+    assignee = SelectField('负责人', validators=[DataRequired('负责人必须指定。')], coerce=int)
+    submit = SubmitField('更新')

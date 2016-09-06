@@ -8,16 +8,19 @@ from app import config
 
 @admin.route('/login', methods=['get', 'post'])
 def login():
-    from ..models import Admin
+    from ..models import User
     form = AdminLoginForm()
     if form.validate_on_submit():
         if form.key.data == config.LOGIN_TOKEN:
-            user = Admin.query.filter_by(username=form.username.data).first()
-            if user is not None and user.verify_password(form.password.data):
-                login_user(user)
-                return redirect(request.args.get('next') or url_for('.index'))
+            user = User.query.filter_by(username=form.username.data).first()
+            if user.admin:
+                if user is not None and user.verify_password(form.password.data):
+                    login_user(user)
+                    return redirect(request.args.get('next') or url_for('.index'))
+                else:
+                    flash('用户名或密码错误，请重新输入。', 'alert-danger')
             else:
-                flash('用户名或密码错误，请重新输入。', 'alert-danger')
+                flash('您没有权限。', 'alert-danger')
         else:
             flash('密令不正确。', 'alert-danger')
     return render_template('admin/login.html', form=form)
