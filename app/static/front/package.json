@@ -1,15 +1,15 @@
 {
-  "name": "IP-Control",
+  "name": "Ddesk",
   "version": "0.1.0",
-  "description": "intpi.www",
+  "description": "Ddesk",
   "main": "index.js",
   "dependencies": {
     "bulma": "^0.1.0",
     "clipboard": "^1.5.12",
     "font-awesome": "^4.6.3",
     "jquery": "^3.1.0",
-    "jquery-datetimepicker": "^2.5.4",
-    "metismenu": "^2.5.2"
+    "metismenu": "^2.5.2",
+    "simditor": "^2.3.6"
   },
   "devDependencies": {},
   "scripts": {

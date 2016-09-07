@@ -7,6 +7,9 @@
     <link href="../../static/back/node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!--Import Bulma.css-->
     <link type="text/css" rel="stylesheet" href="../../static/back/node_modules/bulma/css/bulma.css" media="screen,projection" />
+    <!-- datetimepicker CSS -->
+    <link href="../../static/back/node_modules/jquery-datetimepicker/jquery.datetimepicker.css" rel="stylesheet" type="text/css" >
+    <!-- MetisMenu CSS -->
     <link href="../../static/back/node_modules/metismenu/dist/metisMenu.min.css" rel="stylesheet">
     <!--Import common.css-->
     <link href="../../static/back/styles/common.min.css" rel="stylesheet">
@@ -24,7 +27,7 @@
     <div class="main">
         <div class="is-clearfix">
             <h3 class="title is-pulled-left">处理工单</h3>
-            <a class="button is-small t-b" href="{{ url_for('.question') }}">返回</a>
+            <a class="button is-small t-b" href="{{ url_for('.demand') }}">返回</a>
         </div>
         <section class="section">
         <div class="columns">
@@ -47,6 +50,16 @@
                 <p class="control">
                     {{ form.feedback(class="textarea", placeholder="您需要给提出人一个反馈，即使问题尚待解决") }}
                 </p>
+                {{ form.design_done_time.label(class="label") }}
+                <p class="control">
+                    {{ form.design_done_time(class="input") }}
+                </p>
+                {% if datas.class_id != 2 %}
+                {{ form.online_time.label(class="label") }}
+                <p class="control">
+                    {{ form.online_time(class="input") }}
+                </p>
+                {% endif %}
                 {{ form.status.label(class="label") }}
                 <p class="control">
                     <span class="select">
@@ -72,15 +85,38 @@
                 <p class="control">
                     {{ datas.creator.name }}({{ datas.creator.tel }})
                 </p>
+                {% if datas.class_id == 2 %}
+                <label class="label">支持内容</label>
+                <p class="control">
+                    {{ datas.support }}
+                </p>
+                <label class="label">设计类型</label>
+                <p class="control">
+                    {{ datas.des_type_name }}
+                </p>
+                {% else %}
+                <label class="label">需求受众</label>
+                <p class="control">
+                    {{ datas.audience_name }}
+                </p>
+                <label class="label">需求来源</label>
+                <p class="control">
+                    {{ datas.source }}
+                </p>
+                <label class="label">需求类型</label>
+                <p class="control">
+                    {{ datas.type }}
+                </p>
                 <label class="label">针对产品线或业务</label>
                 <p class="control">
-                    {{ datas.category_name }}
+                    {{ datas.category }}
                 </p>
+                {% endif %}
                 <label class="label">概述</label>
                 <p class="control">
                     {{ datas.title }}
                 </p>
-                <label class="label">详情</label>
+                <label class="label">补充说明</label>
                 <p class="control">
                     {{ datas.details|safe }}
                 </p>
@@ -102,6 +138,18 @@
             $('.menu-list').metisMenu({
                 toggle: false,
             });
+        });
+    </script>
+    <!-- datetimepicker JavaScript -->
+    <script src="../../static/back/node_modules/jquery-datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
+    <script>
+        $('#design_done_time, #online_time').datetimepicker({
+              lang:"ch",           //语言选择中文
+              yearStart: 2016,     //设置最小年份
+              yearEnd: 2050,        //设置最大年份
+              todayButton: false, //关闭选择今天按钮
+              validateOnBlur:false,  //关闭强制输入一个默认值
+              allowTimes:['12:00', '14:00', '18:00']
         });
     </script>
 </body>

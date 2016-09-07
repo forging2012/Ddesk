@@ -37,7 +37,7 @@ class DingTalk:
                                           {'key': '提出人:', 'value': data['create_customer']},
                                           {"key": "产品线:", "value": data['category']}],
                                  "content": "点击「查看详情」登录需求管理系统后，即可在钉钉里处理问题"}}}
-        if category == 2:
+        if category == 3:
             r_data = {'chatid': self.chatid, 'sender': 'dzp', 'msgtype': 'oa',
                       'oa': {'message_url': url, 'pc_message_url': url,
                              'head': {
@@ -48,7 +48,7 @@ class DingTalk:
                                           {'key': '需求类型:', 'value': data['type']}, {'key': '需求受众:', 'value': data['audience']},
                                           {"key": "需求来源:", "value": data['source']}, {"key": "产品线:", "value": data['category']}],
                                  "content": "点击「查看详情」登录需求管理系统后，即可在钉钉里处理需求"}}}
-        if category == 3:
+        if category == 2:
             r_data = {'chatid': self.chatid, 'sender': 'dzp', 'msgtype': 'oa',
                       'oa': {'message_url': url, 'pc_message_url': url,
                              'head': {'bgcolor': 'FF1FC8DB', 'text': '有设计需求来啦!'},

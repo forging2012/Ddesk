@@ -5,13 +5,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
 
-class AdminLine(db.Model):
-    __tablename__ = 'admin_line'
-    admin_id = db.Column(db.Integer, db.ForeignKey('admin.id'), primary_key=True)
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), primary_key=True)
-    timestamp = db.Column(db.DateTime, default=datetime.now)
-
-
 class Admin(UserMixin, db.Model):
     __tablename__ = 'admin'  # 内部用户表
     id = db.Column(db.Integer, primary_key=True)
@@ -22,11 +15,8 @@ class Admin(UserMixin, db.Model):
     email = db.Column(db.String(64), unique=True)  # 用户邮箱
     create_time = db.Column(db.DateTime, default=datetime.now)  # 账号创建时间
     modify_time = db.Column(db.DateTime, default=datetime.now)  # 账号修改时间
-    question = db.relationship('Question', backref='assignee')  # 名下问题
     demand = db.relationship('Demand', backref='assignee')  # 名下需求
     status = db.Column(db.Boolean, default=True)  # 账号状态:锁死\正常
-    line = db.relationship('AdminLine', backref=db.backref('line_admins', lazy='joined'), lazy='dynamic',
-                           cascade='all, delete-orphan')
 
     @property
     def password(self):
@@ -38,20 +28,6 @@ class Admin(UserMixin, db.Model):
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
-
-    def has_line(self, line):
-        return self.line.filter_by(category_id=line.id).first() is not None
-
-    def add_line(self, line):
-        if not self.has_line(line):
-            new_line = AdminLine(line_admins=self, admin_lines=line)
-            db.session.add(new_line)
-            db.session.commit()
-
-    def del_line(self, line):
-        old_line = self.line.filter_by(category_id=line.id).first()
-        db.session.delete(old_line)
-        db.session.commit()
 
     def __repr__(self):
         return "<Admin '{:s}>".format(self.username)
@@ -65,7 +41,6 @@ class Customer(db.Model):
     password_hash = db.Column(db.String(128))  # 密码
     username = db.Column(db.String(12))  # 姓名
     department = db.Column(db.String(12))  # 部门
-    question = db.relationship('Question', backref='create_customer')  # 名下问题
     demand = db.relationship('Demand', backref='create_customer')  # 名下需求
     create_time = db.Column(db.DateTime, default=datetime.now)  # 账号创建时间
     modify_time = db.Column(db.DateTime, default=datetime.now)  # 账号修改时间
@@ -86,37 +61,14 @@ class Customer(db.Model):
         return "<Member '{0}>".format(self.username)
 
 
-class Question(db.Model):
-    __tablename__ = 'question'
-    id = db.Column(db.Integer, primary_key=True)
-    own_customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))  # 问题所属用户
-    assignee_id = db.Column(db.Integer, db.ForeignKey('admin.id'))  # 问题负责人
-    title = db.Column(db.String(60))  # 标题
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))  # 所属分类ID
-    details = db.Column(db.Text, default='')  # 问题详情
-    status = db.Column(db.Integer, default=1)
-    '''
-    1 待处理
-    2 处理中
-    3 已完结
-    '''
-    feedback = db.Column(db.Text, default='')  # 反馈详情
-    create_time = db.Column(db.DateTime, default=datetime.now)  # 账号创建时间
-    modify_time = db.Column(db.DateTime, default=datetime.now)  # 账号修改时间
-
-    creator_id = db.Column(db.Integer, db.ForeignKey('users.id'))  # 问题所属用户
-    issues_id = db.Column(db.Integer) # issues_id
-
-    def __repr__(self):
-        return "<Question '{0}>".format(self.title)
-
-
 class Demand(db.Model):
     __tablename__ = 'demand'
     id = db.Column(db.Integer, primary_key=True)
     id_hash = db.Column(db.String(128), unique=True)
     own_customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))  # 需求所属用户
+
     assignee_id = db.Column(db.Integer, db.ForeignKey('admin.id'))  # 问题负责人
+
     title = db.Column(db.String(60))  # 需求标题
     type_id = db.Column(db.Integer)  # 需求类型
     audience_id = db.Column(db.Integer)  # 需求受众
@@ -128,6 +80,8 @@ class Demand(db.Model):
     attachment = db.Column(db.Text, default='')  # 附件地址
     status = db.Column(db.Integer, default=1)
     '''
+    {100: '不实现', 1: '待确认', 2: '待调研', 3: '排期中', 4: '设计中', 5: '研发排期中', 6: '研发实现中',
+                     8: '部分完成', 9: '搁置', 10: '已完成'}
     1 待确认
     2 待调研
     3 产品排期中
@@ -173,10 +127,7 @@ class Category(db.Model):
     parents_id = db.Column(db.Integer, db.ForeignKey('category.id'))  # 上级分类ID
     sequence = db.Column(db.Integer, default=1)  # 排序:小数靠前,大数靠后
     tag = db.relationship('Tag', backref='category')  # 分类下tags
-    questions = db.relationship('Question', backref='category')  # 分类下问题
     demands = db.relationship('Demand', backref='category')  # 分类下需求
-    admins = db.relationship('AdminLine', backref=db.backref('admin_lines', lazy='joined'), lazy='dynamic',
-                             cascade='all, delete-orphan')  # 当分类被当做业务领域使用时,对应的管理员
 
     def __repr__(self):
         return "<Category '{:s}>".format(self.name)
@@ -276,7 +227,6 @@ class User(UserMixin, db.Model):
     admin = db.Column(db.Boolean, default=False)  # 是否管理员
     status = db.Column(db.Boolean, default=True)  # 账号状态:正常 / 冻结
 
-    question = db.relationship('Question', backref='creator')  # 名下问题(旧)
     demand = db.relationship('Demand', backref='creator')  # 名下需求(旧)
     issue = db.relationship('Issue', backref='creator', foreign_keys=[Issue.creator_id])  # 名下工单
     assign_issue = db.relationship('Issue', backref='assignee', foreign_keys=[Issue.assignee_id])  # 指派的工单
@@ -302,12 +252,9 @@ class Article(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(20))  # 文章标题
     details = db.Column(db.Text)  # 正文
-    tag_id = db.Column(db.Text, default='[]')  # 文章关联的ID
+    tag_id = db.Column(db.Text, default='[]')  # WEN=
     create_time = db.Column(db.DateTime, default=datetime.now)  # 文章发布时间
     modify_time = db.Column(db.DateTime, default=datetime.now)  # 文章最后修改时间
 
     def __repr__(self):
         return "<Article '{:s}>".format(self.title)
-
-
-

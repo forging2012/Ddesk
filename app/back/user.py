@@ -29,6 +29,8 @@ def edit_user():
         this_user.email = form.email.data
         this_user.name = form.name.data
         this_user.tel = form.tel.data
+        if form.password.data:
+            this_user.password = form.password.data
         this_user.status = True if form.status.data == 1 else False
         this_user.admin = form.admin.data
         this_user.modify_time = datetime.now()

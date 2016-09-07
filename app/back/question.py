@@ -47,7 +47,7 @@ def edit_question():
         if category_id:
             this_category = Category.query.get(category_id)
             this_category_name = this_category.name
-    datas = {'id': this_issue.id, 'status': config.ISSUE_STATUS[this_issue.status],
+    datas = {'id': this_issue.id, 'status': config.ISSUE_STATUS[this_issue.status], 'title': this_issue.title,
              'creator': {'name': this_issue.creator.name, 'tel': this_issue.creator.tel},
              'category_name': this_category_name, 'create_time': this_issue.create_time, 'details': this_issue.details}
     form = QuestionIssueForm(feedback=this_issue.feedback, status=this_issue.status, title=this_issue.title)

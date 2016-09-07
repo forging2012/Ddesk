@@ -49,6 +49,14 @@
                 <p class="control">
                     {{ form.tel(class="input", placeholder="电话") }}
                 </p>
+                {{ form.password.label(class="label") }}
+                <p class="control">
+                    {{ form.password(class="input", placeholder="密码") }}
+                </p>
+                {{ form.re_password.label(class="label") }}
+                <p class="control">
+                    {{ form.re_password(class="input", placeholder="重复一遍密码") }}
+                </p>
                 {{ form.status.label(class="label") }}
                 <p class="control">
                   {% for subfield in form.status %}

@@ -14,11 +14,10 @@ def index():
 @admin.route('/dashboard')
 @login_required
 def dashboard():
-    from ..models import Question, Demand, Customer
-    count_question = Question.query.filter(Question.status < 3).count()
+    from ..models import Demand, Customer
     count_demand = Demand.query.filter(Demand.status < 10).count()
     count_customer = Customer.query.count()
-    return render_template('admin/dashboard.html', count_question=count_question, count_demand=count_demand,
+    return render_template('admin/dashboard.html', count_question='', count_demand=count_demand,
                            count_customer=count_customer)
 
 

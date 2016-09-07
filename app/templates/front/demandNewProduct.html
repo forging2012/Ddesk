@@ -80,9 +80,13 @@
                     {{ form.category}}
               </span>
             </p>
+            {{ form.title.label(class="label") }}
+            <p class="control">
+                {{ form.title(class="input", placeholder="简短的描述需求") }}
+            </p>
             <label class="label">{{ form.details.label(class="label") }}</label>
             <p class="control">
-                {{ form.details(id="details", class="textarea", placeholder="请填写详细说明，可以上传图片。") }}
+                {{ form.details(id="details", class="textarea", placeholder="如果几句话说不清楚或要上传图片,请在这里填写更多内容") }}
             </p>
             <p class="content">产品经理可能会要求您提供《需求申请表》等附件，请找产品经理索取，填写完毕后直接发给之前与您沟通的产品经理。</p>
             <div class="content">

@@ -5,25 +5,21 @@ __mtime__ = '16/9/1' '18:27'
 """
 from . import front
 from flask import render_template, redirect, url_for, request
-from ..forms import AddProDemandForm, AddDesDemandForm
+from ..forms import ProductDemandForm, DesignDemandForm
 from flask_login import login_required, current_user
-from app import ding_msg
-from ..models import db, Demand, Category, Config, Tag, Issue, Customer
-from hashlib import md5
-from datetime import datetime
+from app import ding
+from ..models import db, Category, Config, Tag, Issue
 
 
 @front.route('/demand/add', methods=['GET', 'POST'])
 @login_required
 def add_demand():
-    old_user = Customer.query.filter_by(username=current_user.name).first()
-
     old_title = Config.query.filter_by(key='title').first()
     old_subtitle = Config.query.filter_by(key='subtitle').first()
     web_title = old_title.value if old_title else ''
     web_subtitle = old_subtitle.value if old_subtitle else ''
     if request.args.get('c') == 'p':
-        form = AddProDemandForm()
+        form = ProductDemandForm()
         all_type = Tag.query.filter_by(category_id=10, status=1).all()
         all_audience = Tag.query.filter_by(category_id=11, status=1).all()
         all_source = Tag.query.filter_by(category_id=12, status=1).all()
@@ -37,56 +33,35 @@ def add_demand():
         form.source.choices.insert(0, (0, '请选择需求来源'))
         form.category.choices.insert(0, (0, '请选择产品线'))
         if form.validate_on_submit():
-            new_issue = Issue(details=form.details.data, creator_id=current_user.id,
-                              extend=str({'category': form.category.data, 'tag': [form.type.data, form.audience.data, form.source.data]}))
+            extend = {'class_id': 3, 'audience_id': form.audience.data, 'source_id': form.source.data,
+                      'category_id': form.category.data, 'type_id': form.type.data}
+            new_issue = Issue(title=form.title.data, details=form.details.data, extend=str(extend), creator_id=current_user.id)
             db.session.add(new_issue)
             db.session.commit()
 
-
-            text = str(old_user.id) + str(datetime.now())
-            m = md5()
-            m.update(text.encode('utf-8'))
-            id_hash = m.hexdigest()
-            new_demand = Demand(type_id=form.type.data, audience_id=form.audience.data, source_id=form.source.data,
-                                creator_id=current_user.id, details=form.details.data, category_id=form.category.data,
-                                id_hash=id_hash,issues_id=new_issue.id, own_customer_id=old_user.id if old_user is not None else 8)
-            db.session.add(new_demand)
-            db.session.commit()
-            this_demand = Demand.query.filter_by(id_hash=id_hash).first()
-            type = Tag.query.get(this_demand.type_id)
-            audience = Tag.query.get(this_demand.audience_id)
-            source = Tag.query.get(this_demand.source_id)
-            url = 'http://chanpin.xinlonghang.cn/admin/demand/edit?demand_id=' + str(this_demand.id)
-            data = {'create_customer': this_demand.creator.name, 'num': this_demand.id,
-                    'type': type.name, 'audience': audience.name, 'source': source.name, 'category': this_demand.category.name}
-            ding_msg.msg(category=2, url=url, data=data)
+            audience = Tag.query.get(form.audience.data)
+            source = Tag.query.get(form.source.data)
+            category = Category.query.get(form.category.data)
+            url = 'http://chanpin.xinlonghang.cn/back/demand/edit?id=' + str(new_issue.id) + '&type=html5' + '&class=3'
+            print(url)
+            data = {'create_customer': current_user.name, 'num': new_issue.id,
+                    'type': '产品需求', 'audience': audience.name, 'source': source.name, 'category': category.name}
+            ding.msg(category=3, url=url, data=data)
             return redirect(url_for('.commit_success'))
-        return render_template('front/new-demand-p.html', form=form, web_title=web_title, web_subtitle=web_subtitle)
+        return render_template('front/demandNewProduct.html', form=form, web_title=web_title, web_subtitle=web_subtitle)
     elif request.args.get('c') == 'd':
-        form = AddDesDemandForm()
+        form = DesignDemandForm()
         all_des_type = Tag.query.filter_by(category_id=20, status=1).all()
         form.des_type.choices = [(tag.id, tag.name) for tag in all_des_type]
         form.des_type.choices.insert(0, (0, '请选择设计类型'))
         if form.validate_on_submit():
-            support_id = {40: form.support1.data, 39: form.support2.data, 38: form.support3.data}
-
-            new_issue = Issue(details=form.details.data, creator_id=current_user.id, extend=str(
-                {'category': '', 'tag': [47, form.des_type.data, {40: form.support1.data, 39: form.support2.data, 38: form.support3.data}]}))
-            #db.session.add(new_issue)
-            #db.session.commit()
-
-            text = str(old_user.id) + str(datetime.now())
-            m = md5()
-            m.update(text.encode('utf-8'))
-            id_hash = m.hexdigest()
-
-            new_demand = Demand(type_id=47, support_id=str(support_id), des_type_id=form.des_type.data,
-                                creator_id=current_user.id, details=form.details.data,
-                                id_hash=id_hash,issues_id=new_issue.id, own_customer_id=old_user.id if old_user is not None else 8)
-            db.session.add(new_demand)
+            extend = {'class_id': 2, 'des_type_id': form.des_type.data,
+                      'support_id': {40: form.support1.data, 39: form.support2.data, 38: form.support3.data}}
+            new_issue = Issue(title=form.title.data, details=form.details.data, extend=str(extend), creator_id=current_user.id)
+            db.session.add(new_issue)
             db.session.commit()
-            this_demand = Demand.query.filter_by(id_hash=id_hash).first()
-            supports = eval(this_demand.support_id)
+
+            supports = {40: form.support1.data, 39: form.support2.data, 38: form.support3.data}
             support1 = ''
             support2 = ''
             support3 = ''
@@ -97,11 +72,12 @@ def add_demand():
             if supports.get(38):
                 support3 = '设计  '
             support = support1 + support2 + support3
-            des_type = Tag.query.get(this_demand.des_type_id)
-            url = 'http://chanpin.xinlonghang.cn/admin/demand/edit?demand_id=' + str(this_demand.id)
-            data = {'create_customer': this_demand.creator.name, 'num': this_demand.id,
+            des_type = Tag.query.get(form.des_type.data)
+            url = 'http://chanpin.xinlonghang.cn/back/demand/edit?id=' + str(new_issue.id) + '&type=html5' + '&class=2'
+            print(url)
+            data = {'create_customer': current_user.name, 'num': new_issue.id,
                     'type': '设计需求', 'support': support, 'des_type': des_type.name}
-            ding_msg.msg(category=3, url=url, data=data)
+            ding.msg(category=2, url=url, data=data)
             return redirect(url_for('.commit_success'))
-        return render_template('front/new-demand-d.html', form=form, web_title=web_title, web_subtitle=web_subtitle)
+        return render_template('front/demandNewDesign.html', form=form, web_title=web_title, web_subtitle=web_subtitle)
 

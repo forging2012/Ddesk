@@ -29,10 +29,6 @@ alidayu = alidayu.RestApi(key=config.TAOBAO_API_KEY, secret=config.TAOBAO_API_SE
                           url='https://eco.taobao.com/router/rest')
 
 
-# 钉钉
-# 旧
-ding_msg = dingtalk1.DingTalkMsg(config.DINGTALK_API_CID, config.DINGTALK_API_SECRET, config.DINGTALK_API_MSGID)
-
 # 又拍云
 up = upyun.UpYun(config.UPYUN_BUCKET, username=config.UPYUN_USERNAME, password=config.UPYUN_PASSWORD)
 
