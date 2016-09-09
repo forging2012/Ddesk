@@ -9,8 +9,8 @@ from flask_login import login_required
 @login_required
 def index():
     web_title = Config.query.filter_by(key='title').first()
-    from ..models import Page
-    this_page = Page.query.get_or_404(1)
+    from ..models import Article
+    this_page = Article.query.get(1)
     return render_template('index.html', page_name='index', this_page=this_page, web_title=web_title)
 
 

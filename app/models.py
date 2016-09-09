@@ -252,7 +252,9 @@ class Article(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(20))  # 文章标题
     details = db.Column(db.Text)  # 正文
-    tag_id = db.Column(db.Text, default='[]')  # WEN=
+    tag_id = db.Column(db.Text, default='[]')  # 文章Tags
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))  # 作者
+    status = db.Column(db.Boolean, default=False)  # 账号状态:草稿 / 发布
     create_time = db.Column(db.DateTime, default=datetime.now)  # 文章发布时间
     modify_time = db.Column(db.DateTime, default=datetime.now)  # 文章最后修改时间
 

@@ -49,7 +49,7 @@
             </p>
             {{ form.details.label(class="label") }}
             <p class="control">
-                {{ form.details(id="details", class="textarea", placeholder="如果几句话说不清楚或要上传图片,请在这里填写更多内容") }}
+                {{ form.details(class="textarea", placeholder="如果几句话说不清楚或要上传图片,请在这里填写更多内容") }}
             </p>
             <div class="content">
                 <blockquote>您的联系信息：{{ current_user.name }}， {{ current_user.tel }} <a href="{{ url_for('.logout') }}">退出</a>

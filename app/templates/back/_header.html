@@ -13,7 +13,7 @@
 
 <aside class="aside section">
     <p class="menu-label">
-        当前用户: {{ current_user.name }}({{ current_user.id }}) <a href="{{ url_for('admin.logout') }}">退出</a>
+        当前用户: {{ current_user.name }}({{ current_user.id }}) <a href="{{ url_for('.logout') }}">退出</a>
     </p>
     <ul class="metismenu menu-list">
         <li>
@@ -35,6 +35,16 @@
         </li>
         <li aria-haspopup="true">
             <a>
+                <span class="icon is-small"> <i class="fa fa-file-text-o" aria-hidden="true"></i></span>
+                <span>内容</span>
+                <span class="icon is-small is-angle"><i class="fa fa-angle-down"></i></span>
+            </a>
+            <ul>
+                <li><a href="{{ url_for('.article') }}">文章管理</a></li>
+            </ul>
+        </li>
+        <li aria-haspopup="true">
+            <a>
                 <span class="icon is-small"> <i class="fa fa-users" aria-hidden="true"></i></span>
                 <span>用户</span>
                 <span class="icon is-small is-angle"><i class="fa fa-angle-down"></i></span>
@@ -46,11 +56,11 @@
         <li aria-haspopup="true">
             <a>
                 <span class="icon is-small"> <i class="fa fa-cogs" aria-hidden="true"></i></span>
-                <span>系统设置</span>
+                <span>系统</span>
                 <span class="icon is-small is-angle"><i class="fa fa-angle-down"></i> </span>
             </a>
             <ul>
-                <li><a href="{{ url_for('.config') }}">网站设置</a></li>
+                <li><a href="{{ url_for('.config') }}">基本信息</a></li>
             </ul>
         </li>
     </ul>

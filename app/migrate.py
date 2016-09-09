@@ -3,9 +3,20 @@
 __author__ = 'Zhipeng Du'
 __mtime__ = '16/9/5' '17:42'
 """
-from .models import db, Issue, Customer, User, Admin, Demand
+from .models import db, Issue, Customer, User, Admin, Page, Article
 
 
+def page_to_article():
+    all_page = Page.query.all()
+    user = User.query.filter_by(name='杜志鹏').first()
+    for item in all_page:
+        new_article = Article(title=item.title, details=item.text, tag_id=str([item.tag_id]), create_time=item.create_time, modify_time=item.modify_time,
+                              author_id=user.id, status=True)
+        db.session.add(new_article)
+        db.session.commit()
+    print('文章数据迁移成功')
+
+"""
 # 管理员用户数据迁移
 def admin_to_user():
     all_admin = Admin.query.all()
@@ -17,6 +28,7 @@ def admin_to_user():
             db.session.add(this_user)
             db.session.commit()
     print('管理员转用户数据转换成功')
+"""
 
 
 """
@@ -59,6 +71,7 @@ def question_to_issue():
 """
 
 
+"""
 # 需求提出人ID转移
 def demand_own_to_creator():
     all_demand = Demand.query.all()
@@ -76,8 +89,10 @@ def demand_own_to_creator():
         db.session.add(item)
         db.session.commit()
     print('需求提出人ID转移成功')
+"""
 
 
+"""
 # 需求迁移为工单
 def demand_to_issue():
     all_demand = Demand.query.all()
@@ -135,3 +150,4 @@ def demand_to_issue():
     except Exception as e:
         print(item.id, e)
     print('需求转移工单成功。')
+"""

@@ -5,12 +5,6 @@ from wtforms.validators import DataRequired, Length, EqualTo, ValidationError, E
 from wtforms_components import SelectField as SelectField2, SelectMultipleField
 
 
-# 登录
-class AdminLoginForm(Form):
-    username = StringField('用户名', validators=[DataRequired('用户名必填哟！')])
-    password = PasswordField('密码', validators=[DataRequired('密码忘记填了？')])
-    key = StringField('密令', validators=[DataRequired('密令忘记填了？')])
-    submit = SubmitField('')
 
 
 # 版本发布
@@ -40,12 +34,7 @@ class AdminTagForm(Form):
     submit = SubmitField('保存')
 
 
-# 添加文章
-class AdminPageForm(Form):
-    title = StringField('标题', validators=[DataRequired('标题必填哟！')])
-    text = TextAreaField('正文', validators=[DataRequired('正文必填哟！')])
-    tag_id = SelectField('所属Tag', validators=[DataRequired('所属Tag必须指定。')], coerce=int)
-    submit = SubmitField('保存')
+
 
 
 """
@@ -131,3 +120,20 @@ class DemandIssueForm(Form):
                          choices=[(0, '请选择'), (10, '待处理'), (20, '处理中'), (30, '处理完毕')], coerce=int)
     assignee = SelectField('需求当前负责人', validators=[DataRequired('负责人必须指定。')], coerce=int)
     submit = SubmitField('更新')
+
+
+# 管理后台登录
+class AdminLoginForm(Form):
+    username = StringField('用户名', validators=[DataRequired('用户名必填哟！')])
+    password = PasswordField('密码', validators=[DataRequired('密码忘记填了？')])
+    token = StringField('密令', validators=[DataRequired('密令忘记填了？')])
+    submit = SubmitField('')
+
+
+# 添加文章
+class ArticleForm(Form):
+    title = StringField('标题', validators=[DataRequired('标题必填。')])
+    details = TextAreaField('正文', validators=[DataRequired('正文必填。')])
+    tag_id = SelectField('所属Tag', validators=[DataRequired('所属Tag必须指定。')], coerce=int)
+    status = BooleanField('正式发布')
+    submit = SubmitField('保存')

@@ -7,7 +7,6 @@
     <link href="../../static/back/node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!--Import Bulma.css-->
     <link type="text/css" rel="stylesheet" href="../../static/back/node_modules/bulma/css/bulma.css" media="screen,projection" />
-    <!--Import metisMenu.css-->
     <link href="../../static/back/node_modules/metismenu/dist/metisMenu.min.css" rel="stylesheet">
     <!--Import common.css-->
     <link href="../../static/back/styles/common.min.css" rel="stylesheet">
@@ -25,46 +24,31 @@
     <div class="main">
         {% include 'front/_flashMsg.html' %}
         <div class="is-clearfix">
-            <h3 class="title is-pulled-left">用户</h3>
-            <a class="button is-dark is-small t-b" href="{{ url_for('.sync_user') }}">同步用户数据</a>
+            <h3 class="title is-pulled-left">文章</h3>
+            <a class="button is-dark is-small t-b" href="{{ url_for('.add_article') }}">添加文章</a>
         </div>
         <section class="section">
             <table class="table is-bordered">
                 <thead>
                     <tr>
-                        <th>id</th>
-                        <th>用户名</th>
-                        <th>姓名</th>
-                        <th>邮箱</th>
-                        <th>电话</th>
-                        <th>管理员权限</th>
-                        <th>状态</th>
+                        <th>ID</th>
+                        <th>标题</th>
+                        <th>标签</th>
+                        <th>最后编辑</th>
                         <th>操作</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for item in all_users %}
+                    {% for item in datas %}
                     <tr>
                         <td>{{ item.id }}</td>
-                        <td>{{ item.username }}</td>
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.email }}</td>
-                        <td>{{ item.tel }}</td>
+                        <td><a href="{{ url_for('front.page', page_id=item.id) }}" target="_blank">{{ item.title }}</a></td>
                         <td>
-                            {% if item.admin %}
-                            <span class="tag is-success">开通</span>
-                            {% else %}
-                            未开通
-                            {% endif %}
+                            {% for tag in item.tags %}
+                            <span class="tag is-small">{{ tag }}</span> {% endfor %}
                         </td>
-                        <td>
-                            {% if item.status %}
-                            <span class="tag is-success">正常</span>
-                            {% else %}
-                            <span class="tag is-danger">冻结</span>
-                            {% endif %}
-                        </td>
-                        <td><a href="{{ url_for('.edit_user', id=item.id) }}">编辑</a></td>
+                        <td>{{ item.author }} ({{ item.modify_time }})</td>
+                        <td><a href="{{ url_for('.edit_article', id=item.id) }}">编辑</a> <a class="modal-button" data-target="#modal-ter" data-href="{{ url_for('.edit_article',id=item.id, delete='yes') }}">删除</a></td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -73,6 +57,27 @@
     </div>
 
     {% include '_footer.html' %}
+    <!--Modal card-->
+    <div id="modal-ter" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">操作确认</p>
+          <button class="delete"></button>
+        </header>
+        <section class="modal-card-body">
+          <!-- Content ... -->
+            <div class="content">
+                <h5>确认进行本操作吗?</h5>
+                <p>本次操作一旦确认将难以撤销,如操作错误将带来严重后果。</p>
+            </div>
+        </section>
+        <footer class="modal-card-foot">
+          <a id="confirm" class="button is-primary">确认</a>
+          <a class="button">取消</a>
+        </footer>
+      </div>
+    </div>
 
     <!--Import jQuery-->
     <script type="text/javascript" src="../../static/back/node_modules/jquery/dist/jquery.min.js"></script>

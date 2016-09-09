@@ -22,4 +22,4 @@ from flask import Blueprint
 
 admin = Blueprint('admin', __name__)
 
-from . import login, dashboard, version, category, tag, page
+from . import login, dashboard, version, category, tag

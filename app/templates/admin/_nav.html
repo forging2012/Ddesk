@@ -211,7 +211,7 @@
                 <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                 </li>
                 <li class="divider"></li>
-                <li><a href="{{ url_for('.logout') }}"><i class="fa fa-sign-out fa-fw"></i> 退出</a>
+                <li><a href="{{ url_for('back.logout') }}"><i class="fa fa-sign-out fa-fw"></i> 退出</a>
                 </li>
             </ul>
             <!-- /.dropdown-user -->
@@ -247,7 +247,7 @@
                     <a href="{{ url_for('.version') }}"><i class="fa fa-plane fa-fw"></i> 版本</a>
                 </li>
                 <li>
-                    <a href="{{ url_for('.page') }}"><i class="fa fa-file-text fa-fw"></i> 文章</a>
+                    <a href="{{ url_for('back.article') }}"><i class="fa fa-file-text fa-fw"></i> 文章</a>
                 </li>
                 <li>
                     <a href="{{ url_for('back.user') }}"><i class="fa fa-user fa-fw"></i> 用户</a>

@@ -9,7 +9,8 @@
     "font-awesome": "^4.6.3",
     "jquery": "^3.1.0",
     "jquery-datetimepicker": "^2.5.4",
-    "metismenu": "^2.5.2"
+    "metismenu": "^2.5.2",
+    "simditor": "^2.3.6"
   },
   "devDependencies": {},
   "scripts": {
