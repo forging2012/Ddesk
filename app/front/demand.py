@@ -43,7 +43,6 @@ def add_demand():
             source = Tag.query.get(form.source.data)
             category = Category.query.get(form.category.data)
             url = 'http://chanpin.xinlonghang.cn/back/demand/edit?id=' + str(new_issue.id) + '&type=html5' + '&class=3'
-            print(url)
             data = {'create_customer': current_user.name, 'num': new_issue.id,
                     'type': '产品需求', 'audience': audience.name, 'source': source.name, 'category': category.name}
             ding.msg(category=3, url=url, data=data)
@@ -74,7 +73,6 @@ def add_demand():
             support = support1 + support2 + support3
             des_type = Tag.query.get(form.des_type.data)
             url = 'http://chanpin.xinlonghang.cn/back/demand/edit?id=' + str(new_issue.id) + '&type=html5' + '&class=2'
-            print(url)
             data = {'create_customer': current_user.name, 'num': new_issue.id,
                     'type': '设计需求', 'support': support, 'des_type': des_type.name}
             ding.msg(category=2, url=url, data=data)

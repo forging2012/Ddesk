@@ -139,25 +139,12 @@ class Tag(db.Model):
     name = db.Column(db.String(30))  # tag名
     sequence = db.Column(db.Integer, default=0)  # 排序:小数靠前,大数靠后
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))  # 所属分类ID
-    page = db.relationship('Page', backref='tag')  # tag下所属文章
     version = db.relationship('Version', backref='tag')  # tag下所属版本
     status = db.Column(db.Boolean, default=1)  # 启用/弃用
 
     def __repr__(self):
         return "<Tag '{:s}>".format(self.name)
 
-
-class Page(db.Model):
-    __tablename__ = 'page'
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(20))  # 文章标题
-    text = db.Column(db.Text)  # 正文
-    tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'))  # 所属Tag的ID
-    create_time = db.Column(db.DateTime, default=datetime.now)  # 账号创建时间
-    modify_time = db.Column(db.DateTime, default=datetime.now)  # 账号修改时间
-
-    def __repr__(self):
-        return "<Page '{:s}>".format(self.title)
 
 
 """
@@ -225,6 +212,7 @@ class User(UserMixin, db.Model):
     create_time = db.Column(db.DateTime, default=datetime.now)  # 账号创建时间
     modify_time = db.Column(db.DateTime, default=datetime.now)  # 账号修改时间
     admin = db.Column(db.Boolean, default=False)  # 是否管理员
+    super_admin = db.Column(db.Boolean, default=False)  # 是否超级管理员
     status = db.Column(db.Boolean, default=True)  # 账号状态:正常 / 冻结
 
     demand = db.relationship('Demand', backref='creator')  # 名下需求(旧)

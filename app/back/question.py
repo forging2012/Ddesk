@@ -17,13 +17,20 @@ from ..models import db, Issue, Category, User
 def question():
     status_code = request.args.get('status')
     if status_code == '30':
-        all_question = Issue.query.filter_by(status=30, assignee_id=current_user.id).all()
+        if current_user.super_admin:
+            all_question = Issue.query.filter_by(status=30).all()
+        else:
+            all_question = Issue.query.filter_by(status=30, assignee_id=current_user.id).all()
     else:
-        all_question = Issue.query.filter(Issue.status != 30, Issue.assignee_id == current_user.id).all()
+        if current_user.super_admin:
+            all_question = Issue.query.filter(Issue.status != 30).all()
+        else:
+            all_question = Issue.query.filter(Issue.status != 30, Issue.assignee_id == current_user.id).all()
     datas = []
     for item in all_question:
         extend = eval(item.extend)
         this_category_name = '没有指定'
+        assignee_name = item.assignee.name if item.assignee_id is not None else ''
         if extend['class_id'] == 1:
             category_id = extend['category_id']
             if category_id:
@@ -31,7 +38,8 @@ def question():
                 this_category_name = this_category.name
             item_dict = {'id': item.id, 'title': item.title, 'status': config.ISSUE_STATUS[item.status],
                          'category_name': this_category_name, 'create_time': item.create_time,
-                         'creator': {'name': item.creator.name, 'tel': item.creator.tel}}
+                         'creator': {'name': item.creator.name, 'tel': item.creator.tel},
+                         'assignee': {'name': assignee_name}}
             datas.append(item_dict)
     return render_template('back/question.html', datas=datas, status_code=status_code)
 
