@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!--Import Icon Font-->
+    <link href="../../static/front/node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="../../static/node_modules/bulma/css/bulma.css" media="screen,projection" />
+    <!--Import common.css-->
+    <link href="../../static/front/styles/common.min.css" rel="stylesheet">
+    <!-- Simditor -->
+    <link href="../../static/front/node_modules/simditor/styles/simditor.css" rel="stylesheet" type="text/css">
+    <!--Import favicon-->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>{{ web_title }} - 查询进度 | {{ web_subtitle }}</title>
+</head>
+
+<body>
+    {% include 'front/_header.html' %}
+
+    <section class="section">
+        <div class="de-nav">
+            <div class="tabs is-centered is-toggle is-fullwidth">
+              <ul>
+                <li {% if status == '10' %}class="is-active"{% endif %}>
+                  <a href="{{ url_for('.query', status=10) }}">
+                    待确认
+                  </a>
+                </li>
+                <li {% if status == '20' %}class="is-active"{% endif %}>
+                  <a href="{{ url_for('.query', status=20) }}">
+                    处理中
+                  </a>
+                </li>
+                <li {% if status == '30' %}class="is-active"{% endif %}>
+                  <a href="{{ url_for('.query', status=30) }}">
+                    已完结
+                  </a>
+                </li>
+              </ul>
+            </div>
+        </div>
+
+        <div class="columns">
+            <table class="table is-striped column is-half is-offset-one-quarter">
+              <thead>
+                <tr>
+                    <th>工单</th>
+                    <th>提出时间</th>
+                    <th>当前负责人</th>
+                    <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in all_issue %}
+                <tr>
+                    <td><a href="{{ url_for('.query_details', id=item.id) }}" target="_blank">{{ item.title }}</a></td>
+                    <td>{{ item.create_time }}</td>
+                    <td>{{ item.assignee.name }}({{ item.assignee.tel }})</td>
+                    <td><a href="{{ url_for('.query_details', id=item.id) }}" target="_blank">详情</a></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+        </div>
+    </section>
+
+    {% include '_footer.html' %}
+
+    <!--Import jQuery-->
+    <script type="text/javascript" src="../../static/front/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../../static/front/scripts/common.min.js" charset="utf-8"></script>
+
+
+
+</body>
+
+</html>

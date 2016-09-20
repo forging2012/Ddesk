@@ -35,7 +35,7 @@ up = upyun.UpYun(config.UPYUN_BUCKET, username=config.UPYUN_USERNAME, password=c
 # login回调函数
 @login_manager.user_loader
 def load_user(user_id):
-    from .models import User, Admin
+    from .models import User
     return User.query.get(int(user_id))
 
 

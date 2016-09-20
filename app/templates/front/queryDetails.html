@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!--Import Icon Font-->
+    <link href="../../static/front/node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="../../static/node_modules/bulma/css/bulma.css" media="screen,projection" />
+    <!--Import common.css-->
+    <link href="../../static/front/styles/common.min.css" rel="stylesheet">
+    <!-- Simditor -->
+    <link href="../../static/front/node_modules/simditor/styles/simditor.css" rel="stylesheet" type="text/css">
+    <!--Import favicon-->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>{{ web_title }} - 查询进度 | {{ web_subtitle }}</title>
+</head>
+
+<body>
+    {% include 'front/_header.html' %}
+
+    <section class="section">
+        <div class="columns">
+            <div class="column is-half is-offset-one-quarter">
+                <strong>工单流水号</strong>
+                <p>{{ this_issue.id }}</p>
+                <strong>提出时间</strong>
+                <p>{{ this_issue.create_time }}</p>
+                <strong>当前处理进度</strong>
+                <p>{{ status[this_issue.status] }}</p>
+                <strong>当前负责人</strong>
+                <p>{{ this_issue.assignee.name }}（{{ this_issue.assignee.tel }}）</p>
+                <strong>您的需求或问题</strong>
+                <p class="content">
+                    {{ this_issue.title }}
+                    {{ this_issue.details|safe }}
+                </p>
+                <strong>最新反馈</strong>
+                <p class="content">
+
+                    {{ this_issue.feedback|safe }}
+                </p>
+                <strong>时间节点</strong>
+                <p>预计{{ extend.design_done_time }} 设计完成，{{ extend.online_time }}交付/上线。</p>
+                <strong>处理流程</strong>
+                <table class="table is-narrow">
+                      <thead>
+                        <tr>
+                            <th>时间</th>
+                            <th>处理人</th>
+                            <th>处理反馈</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for item in logs %}
+                        <tr>
+                            <td>{{ item.date[0: 19] }}</td>
+                            <td>{{ item.admin }}</td>
+                            <td>{{ item.data }}</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    {% include '_footer.html' %}
+
+    <!--Import jQuery-->
+    <script type="text/javascript" src="../../static/front/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../../static/front/scripts/common.min.js" charset="utf-8"></script>
+
+
+
+</body>
+
+</html>
