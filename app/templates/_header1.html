@@ -9,7 +9,7 @@
 
                     <li><a href="{{ url_for('.add_demand', c='p') }}"><span class="black-text">提需求</span></a></li>
                     <li><a href="{{ url_for('.add_question') }}"><span class="black-text">问题与建议</span></a></li>
-                    <li><a href="{{ url_for('.query') }}"><span class="black-text">处理进度查询</span></a></li>
+                    <li><a href="{{ url_for('.query', status=10) }}"><span class="black-text">处理进度查询</span></a></li>
                     <li><a href="{{ url_for('.version') }}"><span class="black-text">产品更新看板</span></a></li>
                 </ul>
                 <ul class="side-nav" id="mobile-demo">
@@ -17,7 +17,7 @@
 
                     <li><a href="{{ url_for('.add_demand', c='p') }}"><span class="black-text">提需求</span></a></li>
                     <li><a href="{{ url_for('.add_question') }}"><span class="black-text">问题与建议</span></a></li>
-                    <li><a href="{{ url_for('.query') }}"><span class="black-text">处理进度查询</span></a></li>
+                    <li><a href="{{ url_for('.query', status=10) }}"><span class="black-text">处理进度查询</span></a></li>
                     <li><a href="{{ url_for('.version') }}"><span class="black-text">产品更新看板</span></a></li>
                 </ul>
             </div>
