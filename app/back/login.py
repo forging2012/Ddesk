@@ -22,7 +22,7 @@ def login():
                     login_user(user)
                 else:
                     flash('您没有权限。', 'is-danger')
-                return redirect(request.args.get('next') or url_for('admin.index'))
+                return redirect(request.args.get('next') or url_for('.index'))
             else:
                 flash('用户名或密码错误，请重新输入。', 'is-danger')
         else:
